@@ -27,6 +27,9 @@ public class Liste_Etudiants implements Serializable{
     public boolean authEtudiant(Etudiant e){
         return (liste_Etudiants.contains(e));
     }
+    public String toString(){
+        return liste_Etudiants.toString();
+    }
 }
 
 
