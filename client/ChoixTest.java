@@ -17,8 +17,8 @@ public class ChoixTest{
         l2.add("choix2");
         C.setListe_choix_pref(l1);
         C.setListe_choix_sec(l2);
-        System.out.println(C.PasDeDoublon(l1));
-        System.out.println(C.PasDeDoublon(l2));
+        System.out.println(C.pasDeDoublon(l1));
+        System.out.println(C.pasDeDoublon(l2));
 
         C.setChoix_pref("coucou",2,l1);
         C.setChoix_pref("coucou",2,l2);
@@ -26,4 +26,5 @@ public class ChoixTest{
         System.out.println(C.getListe_choix_sec());
         System.out.println(C.choixValide());
     }
+
 }
