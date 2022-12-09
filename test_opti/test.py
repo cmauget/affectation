@@ -1,5 +1,7 @@
 import random
 import numpy as np
+from time import sleep
+from tqdm import tqdm
 
 def gen(m,n):
     
@@ -36,7 +38,7 @@ def gen(m,n):
 
         i += 1
 
-    return(matrix)
+    return matrix
 
 def cout(matrix, matrix_cout):
 
@@ -53,7 +55,7 @@ def cout(matrix, matrix_cout):
 
     for j in range(len(matrix[0])):
         col_sum[j] = sum([matrix[i][j] for i in range(len(matrix))])
-        if col_sum[j]<5:
+        if 0<col_sum[j]<5:
             cout=cout+10000
     #print("col sum : ")
     #print(col_sum)
@@ -85,7 +87,7 @@ def mutation(matrix):
                 test=False
             i+=1
 
-    return(matrix)
+    return matrix
 
 
 def genetique(matrix_cout,n,m, iter):
@@ -101,27 +103,44 @@ def genetique(matrix_cout,n,m, iter):
 
     print(tab_cout[1])
 
-    for j in range(iter):
+    for j in tqdm(range(iter)):
 
         list_matrix2 = [] 
-               
+        #print("##########################")      
         for _ in range(5):
             ind = np.argmin(tab_cout)
+            """
+            print("------------------")
+            print(ind)
+            print(tab_cout[ind])
+            print("------------------")
+            """
             list_matrix2.append(list_matrix[ind])
             tab_cout[ind]=1000000
 
         list_matrix = []
         #print(list_matrix)
         list_matrix=list_matrix2
-        #print(list_matrix)
+
+        #for i in range(5):
+            #print(list_matrix[i])
 
         for i in range(5):
             for _ in range(19):
-                list_matrix.append(mutation(list_matrix2[i]))
-        
-        for i in range(100):
-            tab_cout[i]=cout(list_matrix[i], matrix_cout)
+                #matrix = mutation(list_matrix[i])
+                matrix=gen(n,m)
+                list_matrix.append(matrix)
 
+        for i in range(100):
+            matrix=list_matrix[i]
+            tab_cout[i]=cout(matrix, matrix_cout)
+
+        #print(list_matrix[1])
+        #print(list_matrix[2])
+        #for i in range(5):
+            #print(tab_cout[i])
+
+        
     """
     for i in range(100):
         tab_cout[i]=cout(list_matrix[i], matrix_cout)
@@ -132,7 +151,7 @@ def genetique(matrix_cout,n,m, iter):
 
 matrix_cout=[[1,2,3,4,5,6,7,8],[2,4,1,3,8,6,7,5],[1,2,3,4,5,6,7,8],[2,4,1,3,8,6,7,5],[1,2,3,4,5,6,7,8]]
 
-res, cout = genetique(matrix_cout,5,8,100)
+res, cout = genetique(matrix_cout,5,8,2000)
 
 for i in range(5):
     print(res[i])
