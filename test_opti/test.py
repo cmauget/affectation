@@ -1,31 +1,38 @@
 import random
 import numpy as np
 
+#_____________________generation_____________________#
+
+
 #-----------------gen-----------------#
 
-def gen(m,n):
+def gen(nb_eleve,nb_mat,nb_cours):
     
-    matrix = [[random.randint(0, 1) for _ in range(n)] for _ in range(m)]
-    col_sum = np.zeros(8)
+    matrix = np.zeros(shape = (nb_eleve,nb_mat), dtype = int)
+    for i in range(nb_eleve):
+        for j in range(nb_mat):
+            matrix[i][j] = random.randint(0,1)
+   # matrix = [[random.randint(0, 1) for _ in range(nb_mat)] for _ in range(nb_eleve)]
+    col_sum = np.zeros(shape=(nb_mat), dtype =int)
 
-    for i in range(m):
+    for i in range(nb_eleve):
         row_sum = sum(matrix[i])
-        for j in range(n):
-            if row_sum > 4:
+        for j in range(nb_mat):
+            if row_sum > nb_cours:
                 if matrix[i][j]==1:
                     matrix[i][j] = 0
                     row_sum -= 1
-            elif row_sum < 4:
+            elif row_sum < nb_cours:
                 if matrix[i][j]==0:
                     matrix[i][j] = 1
                     row_sum += 1
 
-    for j in range(n):
-        col_sum[j] = sum([matrix[i][j] for i in range(m)])
+    for j in range(nb_mat):
+        col_sum[j] = sum([matrix[i][j] for i in range(nb_eleve)])
 
     i=0
 
-    while np.amax(col_sum) > 10 and i < m:
+    while np.amax(col_sum) > 10 and i < nb_eleve:
         
         ind= np.argmin(col_sum)
         ind2 = np.argmax(col_sum)
@@ -40,52 +47,84 @@ def gen(m,n):
     return matrix
 
 
+#-----------------gencout-----------------#  
+
+def gencout(nb_eleve, nb_mat, nb_voeux):
+
+   
+    #creation d'un tableau de voeux
+    voeux = np.zeros(shape = (nb_eleve, nb_mat), dtype = int)
+
+    liste = np.zeros(shape=(nb_mat), dtype = int)
+    for j in range(1,nb_mat):
+        liste[j-1]=j
+    
+    for j in range(nb_voeux,nb_mat):
+        liste[j]=-1
+
+    for i in range(nb_eleve):
+        random.shuffle(liste)
+        for j in range(nb_mat):
+            cours = liste[j]
+            voeux[i][j] = cours
+
+    return voeux
+
+
+
+#_____________________cout_____________________#
+
+
 #-----------------cout-----------------#
 
-def cout(matrix, matrix_cout):
+def cout(matrix, matrix_cout, nb_eleve, nb_mat):
 
     Nc=8
     cout=0
-    nb_lignes = len(matrix)
-    nb_colones = len(matrix[0])
-    col_sum = np.zeros(nb_colones)
-    for j in range(nb_colones):
-        for i in range(nb_lignes):
+    col_sum = np.zeros(shape = (nb_mat), dtype=int)
+    for j in range(nb_mat):
+        for i in range(nb_eleve):
             val = matrix[i][j]*matrix_cout[i][j]
             if val == -1:
                 cout=cout+10*pow(Nc,2)
             else:
                 cout=cout+pow(val,2)
 
-    for j in range(nb_colones):
-        col_sum[j] = sum([matrix[i][j] for i in range(nb_lignes)])
+    for j in range(nb_mat):
+        col_sum[j] = sum([matrix[i][j] for i in range(nb_eleve)])
         if 0<col_sum[j]<5 or col_sum[j]>10:
             cout=cout+10000
     return cout
 
 
+
+#_____________________modification_____________________#
+
 #-----------------mutation-----------------#
 
-def mutation(matrix_global):
+def mutation(matrix_global, nb_eleve, nb_mat, nb_cours):
 
-    nb_lignes = len(matrix_global)
 
-    ind1 = random.randint(0,nb_lignes-1)
-    ind2 = random.randint(0,len(matrix_global[0])-1)
-  #  ind3 = random.randint(0,len(matrix_global)-1)
+    ind1 = random.randint(0,nb_eleve-1)
+    ind2 = random.randint(0,nb_mat-1)
+    ind3 = random.randint(0,nb_mat-nb_cours)
     
     sub_list = matrix_global[ind1].copy()
 
     test = True
-    i=0
+    i,j=0,0
     while test :
         v = sub_list[ind2]
         val = abs(v-1)
-        if sub_list[i]== val:
+        if sub_list[i]== val and j==ind3 :
             sub_list[i]=v
             sub_list[ind2]=val
             test=False
+        elif sub_list[i]== val and j!=ind3:
+            j+=1
         i+=1
+        if i>=nb_mat:
+            i=0
 
     matrix_global[ind1]=sub_list
    
@@ -95,14 +134,13 @@ def mutation(matrix_global):
 
 #-----------------crossover-----------------#    
 
-def crossover(matrix_global1, matrix_global2):
+def crossover(matrix_global1, matrix_global2,nb_eleve):
 
     matrix = matrix_global1
     matrix2 = matrix_global2
-    #matrix_temp=np.zeros(len(matrix[0]))
 
-    ind1 = random.randint(0,len(matrix)-1)
-    ind2 = random.randint(0,len(matrix)-1)
+    ind1 = random.randint(0,nb_eleve-1)
+    ind2 = random.randint(0,nb_eleve-1)
 
     #matrix_temp = matrix[ind1]
     #print("matrix temp : ", matrix_temp)
@@ -112,40 +150,15 @@ def crossover(matrix_global1, matrix_global2):
     return matrix
 
 
-#-----------------gencout-----------------#  
 
-def gencout(n):
-
-    nb_cours= 8
-    nb_voeux=6
-    nb_cours_affectes = 4
-    #creation d'un tableau de voeux
-    voeux = np.empty(shape = (n, nb_cours), dtype = int)
-
-    liste = np.zeros(shape=(nb_cours))
-    for j in range(1,nb_cours):
-        liste[j-1]=j
-    
-    for j in range(nb_voeux,nb_cours):
-        liste[j]=-1
-
-    for i in range(n):
-        random.shuffle(liste)
-        for j in range(nb_cours):
-            cours = liste[j]
-            voeux[i][j] = cours
-
-    #print(voeux)
-
-    return voeux
-
+#_____________________algo_principal_____________________#
 
 #-----------------genetique-----------------#
 
-def genetique(matrix_cout,n,m, iter=100, disp=True, debug=False, target=550):
+def genetique(matrix_cout, nb_eleve, nb_mat, nb_cours, iter=400, disp=True, debug=False, target=550):
   
     i_out = 0
-    tab_cout = np.zeros(100)
+    tab_cout = np.zeros(shape= (100), dtype = int)
 
     for i in range(100):
         tab_cout[i] = 10001
@@ -153,15 +166,15 @@ def genetique(matrix_cout,n,m, iter=100, disp=True, debug=False, target=550):
     while np.amin(tab_cout) > 10000 and i_out <4 :
 
         if disp:
-            print("Début de l'affectation")
+            print("Début de l'affectation...")
 
         list_matrix = []
         list_matrix2 = []
         
         for i in range(100):
-            matrix = gen(n,m)
+            matrix = gen(nb_eleve,nb_mat, nb_cours)
             list_matrix.append(matrix)
-            tab_cout[i]=cout(matrix, matrix_cout)
+            tab_cout[i]=cout(matrix, matrix_cout, nb_eleve, nb_mat)
         
         if disp:
             print("cout initial généré : ", tab_cout[1])
@@ -179,7 +192,7 @@ def genetique(matrix_cout,n,m, iter=100, disp=True, debug=False, target=550):
             list_matrix = list_matrix2.copy()
 
             for _ in range(5):
-                list_matrix.append(gen(n,m))
+                list_matrix.append(gen(nb_eleve,nb_mat,nb_cours))
 
             for i in range(10):
 
@@ -190,26 +203,31 @@ def genetique(matrix_cout,n,m, iter=100, disp=True, debug=False, target=550):
                     else:
                         ind = k
 
-                    matrix3 = list_matrix[ind].copy()
-                    matrix2 = list_matrix[i].copy()
-                    matrix_cross = crossover(matrix2,matrix3)
+                    matrix_temp1 = list_matrix[ind].copy()
+                    matrix_temp2 = list_matrix[i].copy()
+                    matrix_cross = crossover(matrix_temp1,matrix_temp2,nb_eleve)
                     list_matrix.append(matrix_cross)
                 
                 for _ in range(3):
-                    matrix4 = list_matrix[i].copy()
-                    matrix_mut = mutation(matrix4)
+                    matrix_temp = list_matrix[i].copy()
+                    matrix_mut = mutation(matrix_temp, nb_eleve, nb_mat, nb_cours)
                     list_matrix.append(matrix_mut)
                 
 
             for i in range(100):
                 matrix=list_matrix[i].copy()
-                tab_cout[i]=cout(matrix, matrix_cout)
+                tab_cout[i]=cout(matrix, matrix_cout, nb_eleve, nb_mat)
+
+            res_cout = np.amin(tab_cout)
 
             if debug:
-                print(np.amin(tab_cout))
+                print(res_cout)
             
-            print("Cout actuel : ",np.amin(tab_cout), "||| itération : ",j+1,"/",iter, "||| target : ",target, end='\r')
+            print("| Cout actuel : ",res_cout, "||| itération : ",j+1,"/",iter, "||| target : ",target," |" ,end='\r')
+
             if np.amin(tab_cout) < target:
+                print("")
+                print("target atteinte en ",j+1, " iterations")
                 break
             
         if debug:
@@ -218,21 +236,21 @@ def genetique(matrix_cout,n,m, iter=100, disp=True, debug=False, target=550):
         i_out+=1
 
     res_matrix = list_matrix[np.argmin(tab_cout)]
-    res_cout = np.amin(tab_cout)
 
     if disp:
         print("")
         print("Affectation finale : ")
-        for i in range(n):
-            print(res_matrix[i])
+        print(res_matrix)
         print("Cout final obtenu : ", res_cout)
 
     return res_matrix, res_cout
     
 #_____________________main_____________________#
 
-nbr_eleve = 17
-nbr_mat = 8
+nb_eleve = 17 #nb d'eleves au total 
+nb_mat = 8 #nb de matières au totales
+nb_voeux = 6 #nb de voeux fait par l'eleve
+nb_cours = 4 #nb de cours à assigner
 
-matrix_cout=gencout(nbr_eleve)
-res, cout = genetique(matrix_cout,nbr_eleve,nbr_mat, iter=100000)
+matrix_cout= gencout(nb_eleve, nb_mat, nb_voeux)
+res, cout = genetique(matrix_cout, nb_eleve, nb_mat, nb_cours)
