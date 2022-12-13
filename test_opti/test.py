@@ -48,7 +48,7 @@ def cout(matrix, matrix_cout):
         for i in range(len(matrix)):
             val = matrix[i][j]*matrix_cout[i][j]
             if val == -1:
-                cout=cout+10*Nc
+                cout=cout+10*pow(Nc,2)
             else:
                 cout=cout+pow(val,2)
 
@@ -60,7 +60,7 @@ def cout(matrix, matrix_cout):
     #print(col_sum)
     return cout
 
-"""
+
 def mutation(matrix_global):
 
     matrix_prout = matrix_global.copy()
@@ -90,7 +90,6 @@ def mutation(matrix_global):
             i+=1
 
     return matrix_prout
-"""
 
 def crossover(matrix_global1, matrix_global2):
 
@@ -108,99 +107,145 @@ def crossover(matrix_global1, matrix_global2):
 
     return matrix, matrix2
 
-def test(matrix):
+def gencout(n):
 
-    matrix=np.zeros((6,8))
-    return matrix
+    nb_cours= 8
+    nb_voeux=6
+    nb_cours_affectes = 4
+    #creation d'un tableau de voeux
+    voeux = np.empty(shape = (n, nb_cours), dtype = int)
+
+    liste = np.zeros(shape=(nb_cours))
+    for j in range(1,nb_cours):
+        liste[j-1]=j
+    
+    for j in range(nb_voeux,nb_cours):
+        liste[j]=-1
+
+    for i in range(n):
+        random.shuffle(liste)
+        for j in range(nb_cours):
+            cours = liste[j]
+            voeux[i][j] = cours
+
+    #print(voeux)
+
+    return voeux
 
 
-
-def genetique(matrix_cout,n,m, iter):
+def genetique(matrix_cout,n,m, iter=100, disp=True):
   
     i_out = 0
     tab_cout = np.zeros(100)
+    tab_sol = np.zeros(5)
+    list_sol = []
 
-    for i in range(100):
-        tab_cout[i] = 10001
+    for i in range(5):
+        tab_sol[i] = 10001
 
-    while tab_cout[np.argmin(tab_cout)] > 10000 and i_out <4 :
+    while np.amin(tab_sol) > 10000 and i_out <4 :
 
-        list_matrix = []
-        list_matrix2 = []
+        if disp:
+            print("Début de l'affectation")
 
-        for i in range(100):
-            matrix = gen(n,m)
-            list_matrix.append(matrix)
-            tab_cout[i]=cout(matrix, matrix_cout)
-        
-        print(tab_cout[1])
+        for p in range(5):
 
-        for j in tqdm(range(iter)):
+            if disp:
+                print("#-#-#-#-#-#-#-",p+1,"/ 5 -#-#-#-#-#-#-#-#")
 
-            list_matrix2 = []   
-
-            for _ in range(5):
-                ind = np.argmin(tab_cout)
-                list_matrix2.append(list_matrix[ind])
-                tab_cout[ind]=1000000
-
+            list_matrix = []
+            list_matrix2 = []
             
-            #print(list_matrix)
-            list_matrix=[]
-            list_matrix = list_matrix2.copy()
-
-            for _ in range(5):
-                list_matrix.append(gen(n,m))
-            
-            """
-            for j in range(5):
-                for i in range(6):
-                    matrix_proutcaca = list_matrix[j].copy()
-                    print(matrix_proutcaca[i])
-                print("")
-            """
-
-            for i in range(10):
-                for _ in range(9):
-                    if i==4:
-                        matrix3 = list_matrix[1].copy()
-                    else :
-                        matrix3 = list_matrix[i+1].copy()
-                    matrix2 = list_matrix[i].copy()
-                    matrix, matrix4 = crossover(matrix2,matrix3)
-                    list_matrix.append(matrix)
-            
-            """
-            print("--------------")
-            for j in range(5):
-                for i in range(6):
-                    matrix_proutcaca = list_matrix[j].copy()
-                    print(matrix_proutcaca[i])
-                print("")
-            """
-
             for i in range(100):
-                matrix=list_matrix[i].copy()
+                matrix = gen(n,m)
+                list_matrix.append(matrix)
                 tab_cout[i]=cout(matrix, matrix_cout)
+            
+            if disp:
+                print("cout initial généré : ", tab_cout[1])
 
-            """
-            for i in range(5):
-                print(tab_cout[i])  
-            print("-----")
-            """
+            for j in tqdm(range(iter)):
 
-        print(tab_cout[np.argmin(tab_cout)])
+                list_matrix2 = []   
+
+                for _ in range(5):
+                    ind = np.argmin(tab_cout)
+                    list_matrix2.append(list_matrix[ind])
+                    tab_cout[ind]=1000000
+
+                list_matrix=[]
+                list_matrix = list_matrix2.copy()
+
+                for _ in range(5):
+                    list_matrix.append(gen(n,m))
+                
+                """
+                for j in range(5):
+                    for i in range(6):
+                        matrix_proutcaca = list_matrix[j].copy()
+                        print(matrix_proutcaca[i])
+                    print("")
+                """
+
+                for i in range(10):
+                    for _ in range(6):
+                        if i==4:
+                            matrix3 = list_matrix[1].copy()
+                        else :
+                            matrix3 = list_matrix[i+1].copy()
+                        matrix2 = list_matrix[i].copy()
+                        matrix, matrix4 = crossover(matrix2,matrix3)
+                        list_matrix.append(matrix)
+                    for _ in range(3):
+                        matrix2 = list_matrix[i].copy()
+                        matrix = mutation(matrix2)
+                        list_matrix.append(matrix)
+                
+                """
+                print("--------------")
+                for j in range(5):
+                    for i in range(6):
+                        matrix_proutcaca = list_matrix[j].copy()
+                        print(matrix_proutcaca[i])
+                    print("")
+                """
+
+                for i in range(100):
+                    matrix=list_matrix[i].copy()
+                    tab_cout[i]=cout(matrix, matrix_cout)
+
+                """
+                for i in range(5):
+                    print(tab_cout[i])  
+                print("-----")
+                """
+                
+
+            tab_sol[p]=np.amin(tab_cout)
+            list_sol.append(list_matrix[np.argmin(tab_cout)].copy())
+            if disp:
+                print("cout final obtenu : " ,tab_sol[p])
+                
+
         i_out+=1
+    #print(len(list_sol))
+    #print(np.argmin(tab_sol))
+    res_matrix = list_sol[np.argmin(tab_sol)]
+    res_cout = np.amin(tab_sol)
 
-    return list_matrix[np.argmin(tab_cout)], tab_cout[np.argmin(tab_cout)]
+    if disp:
+        print("Affectation finale : ")
+        for i in range(n):
+            print(res_matrix[i])
+        print("Cout final obtenu : ", res_cout)
+
+    return res_matrix, res_cout
     
+#_____________________main_____________________#
 
-matrix_cout=[[1,2,3,4,5,6,7,8],[2,4,1,3,8,6,7,5],[1,2,3,4,5,6,7,8],[2,4,1,3,8,6,7,5],[1,2,3,4,5,6,7,8],[7,3,8,2,6,4,5,1],[5,4,7,8,6,2,3,1],[8,7,6,5,4,3,2,1]]
+nbr_eleve = 20
+nbr_mat = 8
 
+matrix_cout=gencout(nbr_eleve)
+res, cout = genetique(matrix_cout,nbr_eleve,nbr_mat)
 
-res, cout = genetique(matrix_cout,8,8,400)
-
-for i in range(8):
-    print(res[i])
-
-print(cout)
