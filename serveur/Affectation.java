@@ -44,9 +44,9 @@ public class Affectation {
                 this.liste_Choix_Brut.add(c);
     }
 
-    public Choix retournerAffectation(Etudiant e){
-        return ;
-    }
+    //public Choix retournerAffectation(Etudiant e){
+    //    return ;
+    //}
 
     public boolean moduleOuvert(String module){
         return false;
