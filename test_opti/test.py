@@ -1,11 +1,12 @@
 import random
 import numpy as np
+from tqdm import tqdm
 
 #_____________________generation_____________________#
 
 
 #-----------------gen-----------------#
-
+#génére une matrice aléatoire
 def gen(nb_eleve,nb_mat,nb_cours):
     
     matrix = np.zeros(shape = (nb_eleve,nb_mat), dtype = int)
@@ -48,7 +49,7 @@ def gen(nb_eleve,nb_mat,nb_cours):
 
 
 #-----------------gencout-----------------#  
-
+#gen une matrice de cout aléatoire
 def gencout(nb_eleve, nb_mat, nb_voeux):
 
    
@@ -76,7 +77,7 @@ def gencout(nb_eleve, nb_mat, nb_voeux):
 
 
 #-----------------cout-----------------#
-
+#définit le cout
 def cout(matrix, matrix_cout, nb_eleve, nb_mat):
 
     Nc=8
@@ -85,7 +86,7 @@ def cout(matrix, matrix_cout, nb_eleve, nb_mat):
     for j in range(nb_mat):
         for i in range(nb_eleve):
             val = matrix[i][j]*matrix_cout[i][j]
-            if val == -1:
+            if val == -1: #-1 si voeux non choisi
                 cout=cout+10*pow(Nc,2)
             else:
                 cout=cout+pow(val,2)
@@ -93,7 +94,7 @@ def cout(matrix, matrix_cout, nb_eleve, nb_mat):
     for j in range(nb_mat):
         col_sum[j] = sum([matrix[i][j] for i in range(nb_eleve)])
         if 0<col_sum[j]<5 or col_sum[j]>10:
-            cout=cout+10000
+            cout=cout+10000 #pénalise le non respect d'une condition
     return cout
 
 
@@ -101,7 +102,7 @@ def cout(matrix, matrix_cout, nb_eleve, nb_mat):
 #_____________________modification_____________________#
 
 #-----------------mutation-----------------#
-
+#prend une affectation au hasard et l'échange avec une affectation opposé sur la même ligne
 def mutation(matrix_global, nb_eleve, nb_mat, nb_cours):
 
 
@@ -133,6 +134,7 @@ def mutation(matrix_global, nb_eleve, nb_mat, nb_cours):
 
 
 #-----------------crossover-----------------#    
+#change de marnière aléatoire deux lignes de deux matrices différentes
 
 def crossover(matrix_global1, matrix_global2,nb_eleve):
 
@@ -161,7 +163,7 @@ def genetique(matrix_cout, nb_eleve, nb_mat, nb_cours, iter=400, disp=True, debu
     tab_cout = np.zeros(shape= (100), dtype = int)
 
     for i in range(100):
-        tab_cout[i] = 10001
+        tab_cout[i] = 10001 #initalise un tableau de cout (pour le while)
 
     while np.amin(tab_cout) > 10000 and i_out <4 :
 
@@ -171,10 +173,10 @@ def genetique(matrix_cout, nb_eleve, nb_mat, nb_cours, iter=400, disp=True, debu
         list_matrix = []
         list_matrix2 = []
         
-        for i in range(100):
+        for i in range(100): #gen 100 matrices aléatoires
             matrix = gen(nb_eleve,nb_mat, nb_cours)
             list_matrix.append(matrix)
-            tab_cout[i]=cout(matrix, matrix_cout, nb_eleve, nb_mat)
+            tab_cout[i]=cout(matrix, matrix_cout, nb_eleve, nb_mat)#calcule le cout initiale
         
         if disp:
             print("cout initial généré : ", tab_cout[1])
@@ -183,7 +185,7 @@ def genetique(matrix_cout, nb_eleve, nb_mat, nb_cours, iter=400, disp=True, debu
             
             list_matrix2 = []   
 
-            for _ in range(5):
+            for _ in range(5): #prend les 5 matrices avec le plus faible cout
                 ind = np.argmin(tab_cout)
                 list_matrix2.append(list_matrix[ind])
                 tab_cout[ind]=1000000
@@ -192,11 +194,11 @@ def genetique(matrix_cout, nb_eleve, nb_mat, nb_cours, iter=400, disp=True, debu
             list_matrix = list_matrix2.copy()
 
             for _ in range(5):
-                list_matrix.append(gen(nb_eleve,nb_mat,nb_cours))
+                list_matrix.append(gen(nb_eleve,nb_mat,nb_cours))#gen 5 nouvelles matrices pour ne pas stériliser l'échantillon
 
-            for i in range(10):
+            for i in range(10):#pour chacune des 10 matrices (5 + 5 gens)
 
-                for k in range(6):
+                for k in range(6):#Il y a 6 crossover
 
                     if j>=i:
                         ind= k+1
@@ -208,13 +210,13 @@ def genetique(matrix_cout, nb_eleve, nb_mat, nb_cours, iter=400, disp=True, debu
                     matrix_cross = crossover(matrix_temp1,matrix_temp2,nb_eleve)
                     list_matrix.append(matrix_cross)
                 
-                for _ in range(3):
+                for _ in range(3):#et 3 mutations
                     matrix_temp = list_matrix[i].copy()
                     matrix_mut = mutation(matrix_temp, nb_eleve, nb_mat, nb_cours)
                     list_matrix.append(matrix_mut)
                 
 
-            for i in range(100):
+            for i in range(100):#nouveau calcul du cout
                 matrix=list_matrix[i].copy()
                 tab_cout[i]=cout(matrix, matrix_cout, nb_eleve, nb_mat)
 
@@ -223,12 +225,13 @@ def genetique(matrix_cout, nb_eleve, nb_mat, nb_cours, iter=400, disp=True, debu
             if debug:
                 print(res_cout)
             
-            print("| Cout actuel : ",res_cout, "||| itération : ",j+1,"/",iter, "||| target : ",target," |" ,end='\r')
+            if disp:#affichage
+                print("| Cout actuel : ",res_cout, "||| itération : ",j+1,"/",iter, "||| target : ",target," |" ,end='\r')
 
-            if np.amin(tab_cout) < target:
-                print("")
-                print("target atteinte en ",j+1, " iterations")
-                break
+                if np.amin(tab_cout) < target:
+                    print("")
+                    print("target atteinte en ",j+1, " iterations")
+                    break
             
         if debug:
             print()
