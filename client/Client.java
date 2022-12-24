@@ -15,6 +15,7 @@ public class Client {
       BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
       PrintWriter out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
 
+      
       // Envoie une requête au serveur ici...
       // Utilisez les objets in et out pour lire et écrire sur le socket
 
