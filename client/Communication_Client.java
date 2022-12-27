@@ -93,6 +93,7 @@ public class Communication_Client{
       socket = new Socket(HOST, PORT);
       PrintWriter out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
       out.println("Demande Affectation");
+      out.println(e.login)
       out.flush();
       out.close();
       socket.close();
