@@ -57,12 +57,12 @@ public class Choix implements Serializable{
         return true;
     }
 
-    public void setChoix_pref(String matiere, int place, ArrayList<String> liste_choix_pref){
-        liste_choix_pref.add(place,matiere);
+    public void setChoix_pref(String matiere, int place){
+        this.liste_choix_pref.add(place,matiere);
     }
 
-    public void setChoix_sec(String matiere, int place, ArrayList<String> liste_choix_sec){
-        liste_choix_sec.add(place,matiere);
+    public void setChoix_sec(String matiere, int place){
+        this.liste_choix_sec.add(place,matiere);
     }
 
     public boolean choixValide(){
@@ -76,6 +76,5 @@ public class Choix implements Serializable{
       Choix choix = (Choix) o;
       return id == choix.id;
     }
-
 
 }

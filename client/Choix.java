@@ -69,5 +69,12 @@ public class Choix implements Serializable{
         return ((this.liste_choix_pref.size()==8))&&((this.liste_choix_sec.size()==4));
     }
 
+    //Redefinition equals
+    public boolean equals(Object o){
+      if (this==o) return true;
+      if (o == null || getClass()!= o.getClass()) return false;
+      Choix choix = (Choix) o;
+      return id == choix.id;
+    }
 
 }

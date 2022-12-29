@@ -14,39 +14,59 @@ public class Accepter_clients implements Runnable{
     private Socket socket;
     private Liste_Etudiants liste_etu;
     private Affectation affectation;
+    //private BufferedReader in;
+    private ObjectInputStream oin;
+    private ObjectOutputStream out;
 
 
     //Constructeur
-    public Accepter_clients(Socket socket){
+    public Accepter_clients(Socket socket) throws IOException{
+      try{
       this.socket = socket;
+      liste_etu = new Liste_Etudiants();
+      affectation = new Affectation();
+      //this.in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+      this.oin = new ObjectInputStream(this.socket.getInputStream());
+      this.out = new ObjectOutputStream(this.socket.getOutputStream());
+    }
+    catch (IOException e) {
+      e.printStackTrace();
+    }
     }
 
     //Redéfinition run()
     public void run(){
       try {
+
         String type = recevoirString();
         switch(type){
-        case "Choix":
+          case "Etudiant":
+          {
+            Etudiant etu = recevoirEtudiant();
+            this.liste_etu.creerEtudiant(etu);
+
+          }
+          case "Choix":
         {
+          String confirmation = recevoirString();
           Choix c = recevoirChoix();
           this.affectation.ajouterChoix(c);
           this.affectation.optimiserAffectations();
         }
-        break;
-        case "Etudiant":
-        {
-          Etudiant etu = recevoirEtudiant();
-          this.liste_etu.creerEtudiant(etu);
-        }
-        break;
+
         case "Demande Affectation":
         {
           String confirmation = recevoirString();
+          confirmation = recevoirString();
           Etudiant etu = recevoirEtudiant();
           EnvoyerAffectation(affectation.retournerAffectation(etu));
         }
         break;
       }
+//in.close();
+      oin.close();
+      out.close();
+      socket.close();
       }
       catch (IOException | ClassNotFoundException e) {
         e.printStackTrace();
@@ -56,35 +76,36 @@ public class Accepter_clients implements Runnable{
 
     //Méthodes
 
-    private String recevoirString() throws IOException {
-      BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-      String type = in.readLine();
-      in.close();
+    private String recevoirString() throws IOException,ClassNotFoundException {
+      //BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+      Object object = oin.readObject();
+      String type = (String) object;
+      //in.close();
       return type;
     }
 
     private Choix recevoirChoix() throws IOException,ClassNotFoundException{
-      ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-      Object object = in.readObject();
+      //ObjectInputStream oin = new ObjectInputStream(socket.getInputStream());
+
+      Object object = oin.readObject();
       Choix choix = (Choix) object;
-      in.close();
+      //oin.close();
       return choix;
     }
 
     private Etudiant recevoirEtudiant() throws IOException, ClassNotFoundException{
 
-      ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-      System.out.println("TEST");
-      Object object = in.readObject();
+      //ObjectInputStream oin = new ObjectInputStream(socket.getInputStream());
+      Object object = oin.readObject();
       Etudiant etu = (Etudiant) object;
-      in.close();
+      //in.close();
       System.out.println(etu);
       return etu;
     }
 
     private void EnvoyerAffectation (Choix c) throws IOException, ClassNotFoundException{
-      ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+      //ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
       out.writeObject(c);
-      out.close();
+      //out.close();
     }
 }
