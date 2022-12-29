@@ -2,11 +2,11 @@ import java.util.*;
 
 public class Affectation {
 
-    //Attributs 
+    //Attributs
     public ArrayList<Choix> liste_Choix_Traite;
     public ArrayList<Choix> liste_Choix_Brut;
 
-    //Méthodes 
+    //Méthodes
     public Affectation(){
         this.liste_Choix_Traite = new ArrayList<Choix>();
         this.liste_Choix_Brut=new ArrayList<Choix>();
@@ -33,24 +33,29 @@ public class Affectation {
     }
 
     public void optimiserAffectations(){
-        //mettre choix traité si il est passé par l optimisation
-        //mettre nombre de personnes par module au vu des affectations
+
+        //TEMPORAIRE
+        liste_Choix_Traite=liste_Choix_Brut;
+
     }
 
     public void ajouterChoix(Choix c){
-        // if choix traite
-            this.liste_Choix_Traite.add(c);
-            //else (ca veut dire qu'il a pas ete traité)
                 this.liste_Choix_Brut.add(c);
     }
 
-    //public Choix retournerAffectation(Etudiant e){
-    //    return ;
-    //}
+
+
+    public Choix retournerAffectation(Etudiant e){
+        Choix target = new Choix();
+        target.setId(e);
+        int index = liste_Choix_Traite.indexOf(target);
+        Choix choix = liste_Choix_Traite.get(index);
+        return choix;
+    }
 
     public boolean moduleOuvert(String module){
         return false;
-        
+
 
     }
 }

@@ -40,7 +40,7 @@ public class Choix implements Serializable{
 
 
     //Méthode générique pour vérifier les doublons dans un ArrayList
-    
+
     public boolean pasDeDoublon(ArrayList<String> l){
         // pour chaque élément du ArrayList, vérifie s'il se retrouve ensuite dans le ArrayList
         for (int i = 0; i < l.size(); i++)
@@ -52,7 +52,7 @@ public class Choix implements Serializable{
                 }
             }
         }
- 
+
         // aucun doublon n'est trouvé
         return true;
     }
@@ -67,6 +67,14 @@ public class Choix implements Serializable{
 
     public boolean choixValide(){
         return ((this.liste_choix_pref.size()==8))&&((this.liste_choix_sec.size()==4));
+    }
+
+    //Redefinition equals
+    public boolean equals(Object o){
+      if (this==o) return true;
+      if (o == null || getClass()!= o.getClass()) return false;
+      Choix choix = (Choix) o;
+      return id == choix.id;
     }
 
 

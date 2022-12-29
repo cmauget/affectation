@@ -6,24 +6,30 @@ public class Communication_Client{
   //Attributs
   final String HOST = "localhost";
   final int PORT = 2000;
-  Socket socket;
+  public Socket socket;
 
 
   //Constructeur
   public Communication_Client() throws IOException{
-    socket = null;
+    try {
+      socket = new Socket(HOST,PORT);
+    }
+    catch (IOException e){
+      e.printStackTrace();
+    }
+
     }
 
   //Méthodes
 
   public void EnvoiTypage(String s) throws IOException{
     try {
-      socket = new Socket(HOST, PORT);
+      //socket = new Socket(HOST, PORT);
       PrintWriter out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
       out.println(s);
       out.flush();
       out.close();
-      socket.close();
+      //socket.close();
       }
       catch (UnknownHostException e) {
       System.out.println("Hôte inconnu : " + e);
@@ -36,11 +42,11 @@ public class Communication_Client{
   public void EnvoyerChoix(Choix c) throws IOException{
     try{
     EnvoiTypage("Choix");
-    socket = new Socket(HOST, PORT);
+    //socket = new Socket(HOST, PORT);
     ObjectOutputStream oos = new ObjectOutputStream(this.socket.getOutputStream());
     oos.writeObject(c);
     oos.close();
-    socket.close();
+    //socket.close();
   }
     catch (UnknownHostException e) {
     System.out.println("Hôte inconnu : " + e);
@@ -53,11 +59,11 @@ public class Communication_Client{
   public void EnvoyerEtudiant(Etudiant e) throws IOException{
     try{
     EnvoiTypage("Etudiant");
-    socket = new Socket(HOST, PORT);
+    //socket = new Socket(HOST, PORT);
     ObjectOutputStream oos = new ObjectOutputStream(this.socket.getOutputStream());
     oos.writeObject(e);
     oos.close();
-    socket.close();
+    //socket.close();
   }
     catch (UnknownHostException err) {
     System.out.println("Hôte inconnu : " + err);
@@ -73,7 +79,7 @@ public class Communication_Client{
     ObjectInputStream oin = new ObjectInputStream(socket.getInputStream());
     Choix choix = (Choix) oin.readObject();
     oin.close();
-    socket.close();
+    //socket.close();
     return choix;
   }
     catch (UnknownHostException err) {
@@ -93,10 +99,9 @@ public class Communication_Client{
       socket = new Socket(HOST, PORT);
       PrintWriter out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
       out.println("Demande Affectation");
-      out.println(e.login)
+      EnvoyerEtudiant(e);
       out.flush();
       out.close();
-      socket.close();
       }
       catch (UnknownHostException err) {
       System.out.println("Hôte inconnu : " + err);
@@ -112,7 +117,7 @@ public class Communication_Client{
     ObjectInputStream oin = new ObjectInputStream(socket.getInputStream());
     boolean b = (boolean) oin.readObject();
     oin.close();
-    socket.close();
+    //socket.close();
     return b;
   }
     catch (UnknownHostException err) {

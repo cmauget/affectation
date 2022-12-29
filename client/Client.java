@@ -1,31 +1,53 @@
-import java.net.*;
+import java.util.Scanner;
 import java.io.*;
 
+
+
 public class Client {
-  public static void main(String[] args) {
-    final String HOST = "localhost";
-    final int PORT = 2000;
 
-    Socket socket = null;
+  public static void main(String[] args) throws IOException,ClassNotFoundException{
+    try{
 
-    try {
-      socket = new Socket(HOST, PORT);
-      System.out.println("Connexion au serveur réussie : " + socket);
+    Scanner scanner = new Scanner(System.in);
+    System.out.println("Avez vous deja un compte (o/n)?");
+    String input = scanner.nextLine();
+    switch(input){
 
-      BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-      PrintWriter out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
-
-      
-      // Envoie une requête au serveur ici...
-      // Utilisez les objets in et out pour lire et écrire sur le socket
-
-      in.close();
-      out.close();
-      socket.close();
-    } catch (UnknownHostException e) {
-      System.out.println("Hôte inconnu : " + e);
-    } catch (IOException e) {
-      System.out.println("Erreur lors de la connexion au serveur : " + e);
+    case "n":
+    {
+      System.out.println("Entrer un login");
+      String login = scanner.nextLine();
+      System.out.println("Entrer un mdp");
+      String mdp = scanner.nextLine();
+      Etudiant etu = new Etudiant(login,mdp);
+      Communication_Client com = new Communication_Client();
+      com.EnvoyerEtudiant(etu);
+      Choix c = new Choix();
+      c.setId(etu);
+      System.out.println("CHOIX DU PARCOURS PREFERENTIEL");
+      for (int i=0;i<4;i++){
+        System.out.println("Entre votre " + (i+1) + " -eme matiere");
+        String matiere = scanner.nextLine();
+        c.setChoix_pref(matiere,i);
+      }
+      System.out.println("CHOIX DU PARCOURS SECONDAIRE");
+      for (int i=0;i<2;i++){
+        System.out.println("Entre votre " + (i+1) + " -eme matiere");
+        String matiere = scanner.nextLine();
+        c.setChoix_sec(matiere,i);
+      }
+      com.EnvoyerChoix(c);
+      com.EnvoyerDemandeAffectation(etu);
+      Choix c_recu = new Choix();
+      c_recu = com.RecupererAffectation();
+      System.out.println(c_recu);
+      }
+      }
     }
+
+    catch (IOException | ClassNotFoundException e){
+      e.printStackTrace();
+      }
   }
+
 }
