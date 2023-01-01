@@ -13,7 +13,6 @@ public class Client {
     System.out.println("Avez vous deja un compte (o/n)?");
     String input = scanner.nextLine();
     switch(input){
-
     case "n":
     {
       //CREATION SOCKET
@@ -102,6 +101,16 @@ public class Client {
       //FERMETURE Socket
       socket.close();
       }
+      break;
+    case "o":
+    {
+      System.out.println("Veuillez rentrer votre login");
+      String login = scanner.nextLine();
+      System.out.println("Veuillez rentrer votre mot de passe")
+      String mdp = scanner.nextLine();
+      
+
+    }
       }
     }
 
