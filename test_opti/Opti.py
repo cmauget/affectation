@@ -2,6 +2,7 @@ import random
 import numpy as np
 import socket
 import javaobj 
+from time import sleep
 
 class Opti:
 #_____________________generation_____________________#
@@ -116,8 +117,8 @@ class Opti:
         sub_list = matrix_global[ind1].copy()
 
         test = True
-        i,j=0,0
-        while test :
+        i,j,b=0,0,0
+        while test and b< nb_cours*3 :
             v = sub_list[ind2]
             val = abs(v-1)
             if sub_list[i]== val and j==ind3 :
@@ -129,6 +130,7 @@ class Opti:
             i+=1
             if i>=nb_mat:
                 i=0
+            b+=1
 
         matrix_global[ind1]=sub_list
     
@@ -193,11 +195,17 @@ class Opti:
                     list_matrix2.append(list_matrix[ind])
                     tab_cout[ind]=1000000
 
+                if debug:
+                    print("Sel ok")
+
                 list_matrix=[]
                 list_matrix = list_matrix2.copy()
 
                 for _ in range(5):
                     list_matrix.append(self.gen(nb_eleve,nb_mat,nb_cours))#gen 5 nouvelles matrices pour ne pas stériliser l'échantillon
+
+                if debug:
+                    print("gen ok")
 
                 for i in range(10):#pour chacune des 10 matrices (5 + 5 gens)
 
@@ -212,11 +220,15 @@ class Opti:
                         matrix_temp2 = list_matrix[i].copy()
                         matrix_cross = self.crossover(matrix_temp1,matrix_temp2,nb_eleve)
                         list_matrix.append(matrix_cross)
+                    if debug:
+                        print("cross ok")
                     
                     for _ in range(3):#et 3 mutations
                         matrix_temp = list_matrix[i].copy()
                         matrix_mut = self.mutation(matrix_temp, nb_eleve, nb_mat, nb_cours)
                         list_matrix.append(matrix_mut)
+                    if debug:
+                        print("mut ok")
                     
 
                 for i in range(100):#nouveau calcul du cout
@@ -250,53 +262,62 @@ class Opti:
             print("Cout final obtenu : ", res_cout)
 
         return res_matrix, res_cout
-    
+
+
+#_____________________serveur_____________________#
+
+    @staticmethod
+    def launch_server(port, timeout=1):
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        socket.Blocking = False
+
+        server_address = ('localhost', 2031)
+        sock.bind(server_address)
+        sock.listen(1)
+        print("En attente de connexion")
+        connection, client_address = sock.accept()
+        connection.settimeout(timeout)
+
+        return connection
+        
+    @staticmethod
+    def receive_data(connection,debug=False):
+        data=b''
+        while True :                
+            try:
+                chunk = connection.recv(1024)
+            except socket.timeout:
+                print("timeout")
+                break
+            if debug:
+                print(chunk)
+            if not chunk:
+                break
+            data += chunk
+        
+        print("fin import")
+        pobj = javaobj.loads(data)
+        if debug:
+            print(pobj)
+        return data,pobj
+
 
 #_____________________main_____________________#
 if __name__ == "__main__":
 
-    # Créer un socket TCP/IP
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    connection = Opti.launch_server(2031)
+    try:
+        print("Connecté")
+        data ,pobj= Opti.receive_data(connection)
+        o = Opti()
+        res, cout = o.genetique(pobj,4,4,4,debug=False)
+        res2=np.array2string(res,separator=',')
+        connection.sendall(res2.encode())     
+    finally: 
+        print("fermeture du serveur")
+        connection.close()
 
-    # Lier le socket à une adresse et un port
-    server_address = ('localhost', 2020)
-    sock.bind(server_address)
 
-    # Écouter les connexions entrantes
-   
-
-    while True:
-        # Attender une connexion
-        sock.listen(1)
-        print("En attente de connexion")
-        connection, client_address = sock.accept()
-        
-        try:
-            print("Connecté")
-            # Recevoir des données jusqu'à ce que la connexion soit fermée 
-            # Traiter les données reçues et renvoyer le résultat de la fonction
-            #result = "coucou c'est python qui a envoyé !"
-            #connection.sendall(result.encode())
-            #print("envoyé")
-            data=b''
-            while True:
-                chunk = connection.recv(1024)
-                if not chunk:
-                    break
-                data += chunk
-
-            
-            pobj = javaobj.loads(data)
-            #array=pickle.loads(data)
-            print(pobj) 
-            o = Opti() 
-            res, cout = o.genetique(pobj,4,4,4,iter=2,debug=True)
-            print("Message envoyé, au revoir")
-            
-                
-        finally:
-            # Fermer la connexion
-            connection.close()
     """
     o = Opti()
     nb_eleve = 17 #nb d'eleves au total 
