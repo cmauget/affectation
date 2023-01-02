@@ -5,10 +5,10 @@ import javax.swing.*;
 
 
 public class Client {
+   
   public static Fenetres fenetre;
   public static String utilisateur; //placeholder (sera dans unn objet type Etudiant)
-  public static boolean choix_fait; //placeholder (sera avec utilisateur dans unn objet type Etudiant)
-  public static Communication_Client com; 
+  public static boolean choix_fait; //placeholder (sera avec utilisateur dans unn objet type Etudiant) 
   public static Socket socket;
   public static ObjectOutputStream oos;
   public static ObjectInputStream oin;
@@ -22,7 +22,6 @@ public class Client {
       utilisateur = "";
 
       choix_fait = false;
-      com = new Communication_Client();
 
       socket = new Socket("localhost",2000);
       oos = new ObjectOutputStream(socket.getOutputStream());
@@ -146,6 +145,6 @@ public class Client {
       e.printStackTrace();
       }
   }
-*/
+  */
 }
 

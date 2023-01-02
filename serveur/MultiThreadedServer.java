@@ -17,7 +17,7 @@ class MultiThreadedServer {
         Socket socket = serverSocket.accept();
         System.out.println("new connexion");
         new Thread(new Accepter_clients(socket)).start();
-        System.out.println("new connexion");
+        System.out.println("new connexion 2");
       }
     }
     catch (IOException e) {

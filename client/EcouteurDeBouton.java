@@ -77,13 +77,13 @@ public class EcouteurDeBouton implements ActionListener {
             Client.oos.writeObject(etu);
             Client.oos.flush();
             //oos.close();
-            Client.fenetre.acceder_Fenetre("c");
+            Client.fenetre.acceder_Fenetre("b");
         }
     }
 
     catch (IOException ex)
     {
-
+        ex.printStackTrace();
     }
     
     }
