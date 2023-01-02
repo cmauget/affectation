@@ -7,13 +7,13 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Accepter_clients implements Runnable{
+public class Accepter_clients implements Runnable {
 
 
     //Attributs
     private Socket socket;
-    private Liste_Etudiants liste_etu;
-    private Affectation affectation;
+    //private Liste_Etudiants liste_etu;
+    //private Affectation affectation;
     //private BufferedReader in;
     private ObjectInputStream oin;
     private ObjectOutputStream out;
@@ -23,8 +23,8 @@ public class Accepter_clients implements Runnable{
     public Accepter_clients(Socket socket) throws IOException{
       try{
       this.socket = socket;
-      liste_etu = new Liste_Etudiants();
-      affectation = new Affectation();
+      //liste_etu = new Liste_Etudiants();
+      //affectation = new Affectation();
       //this.in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
       this.oin = new ObjectInputStream(this.socket.getInputStream());
       this.out = new ObjectOutputStream(this.socket.getOutputStream());
@@ -37,21 +37,22 @@ public class Accepter_clients implements Runnable{
     //Redéfinition run()
     public void run(){
       try {
-
+        System.out.println("nouveau thread étudiant");
         String type = recevoirString();
         switch(type){
           case "Etudiant":
           {
             Etudiant etu = recevoirEtudiant();
-            this.liste_etu.creerEtudiant(etu);
+            System.out.print("test");
+            MultiThreadedServer.liste_etu.creerEtudiant(etu);
 
           }
           case "Choix":
         {
           String confirmation = recevoirString();
           Choix c = recevoirChoix();
-          this.affectation.ajouterChoix(c);
-          this.affectation.optimiserAffectations();
+          MultiThreadedServer.affectation.ajouterChoix(c);
+          MultiThreadedServer.affectation.optimiserAffectations();
         }
 
         case "Demande Affectation":
@@ -59,7 +60,7 @@ public class Accepter_clients implements Runnable{
           String confirmation = recevoirString();
           confirmation = recevoirString();
           Etudiant etu = recevoirEtudiant();
-          EnvoyerAffectation(affectation.retournerAffectation(etu));
+          EnvoyerAffectation(MultiThreadedServer.affectation.retournerAffectation(etu));
         }
         break;
       }
