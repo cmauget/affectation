@@ -23,6 +23,7 @@ public class Liste_Etudiants implements Serializable{
     }
     public void creerEtudiant(Etudiant e){
         this.liste_Etudiants.add(e);
+        System.out.println("nouvel étudiant");
     }
     public boolean authEtudiant(Etudiant e){
         return (liste_Etudiants.contains(e));

@@ -1,11 +1,39 @@
 import java.util.Scanner;
 import java.io.*;
 import java.net.*;
-
+import javax.swing.*;
 
 
 public class Client {
+  public static Fenetres fenetre;
+  public static String utilisateur; //placeholder (sera dans unn objet type Etudiant)
+  public static boolean choix_fait; //placeholder (sera avec utilisateur dans unn objet type Etudiant)
+  public static Communication_Client com; 
+  public static Socket socket;
+  public static ObjectOutputStream oos;
+  public static ObjectInputStream oin;
 
+  Client() throws IOException{
+      fenetre = new Fenetres();
+      fenetre.setSize(1300,700);
+      fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      fenetre.setVisible(true);
+
+      utilisateur = "";
+
+      choix_fait = false;
+      com = new Communication_Client();
+
+      socket = new Socket("localhost",2000);
+      oos = new ObjectOutputStream(socket.getOutputStream());
+      oin = new ObjectInputStream(socket.getInputStream());
+  }
+
+  public static void main(String[] args) throws IOException{
+    new Client();
+}
+
+  /* 
   public static void main(String[] args) throws IOException,ClassNotFoundException{
     try{
 
@@ -106,7 +134,7 @@ public class Client {
     {
       System.out.println("Veuillez rentrer votre login");
       String login = scanner.nextLine();
-      System.out.println("Veuillez rentrer votre mot de passe")
+      System.out.println("Veuillez rentrer votre mot de passe");
       String mdp = scanner.nextLine();
       
 
@@ -118,5 +146,6 @@ public class Client {
       e.printStackTrace();
       }
   }
-
+*/
 }
+
