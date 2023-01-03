@@ -54,7 +54,7 @@ public class EcouteurDeBouton implements ActionListener {
         }
 
         if (source==Client.fenetre.bouton_choisir) {
-            if (Client.utilisateur.choixfait) //placeholder 
+            if (Client.utilisateur.choixfait)
             {
                 JOptionPane.showMessageDialog(Client.fenetre,"Erreur: vous avez déjà fait vos voeux","Erreur",JOptionPane.INFORMATION_MESSAGE); 
             }
@@ -64,7 +64,7 @@ public class EcouteurDeBouton implements ActionListener {
         }
 
         if (source==Client.fenetre.bouton_voir) {
-            if (!Client.utilisateur.choixfait) //placeholder 
+            if (!Client.utilisateur.choixfait)
             {
                 JOptionPane.showMessageDialog(Client.fenetre,"Erreur: vous n'avez pas encore fait vos voeux","Erreur",JOptionPane.INFORMATION_MESSAGE); 
             }
@@ -165,12 +165,6 @@ public class EcouteurDeBouton implements ActionListener {
             else {
                 JOptionPane.showMessageDialog(Client.fenetre,"Erreur: vous avez mal ordonné les voeux du parcours principal","Erreur",JOptionPane.INFORMATION_MESSAGE); 
             }
-
-
-            //if (true) {
-              
-                //JOptionPane.showMessageDialog(Client.fenetre,"Erreur: vous n'avez pas encore fait vos voeux","Erreur",JOptionPane.INFORMATION_MESSAGE); 
-           // }
         
         }
 
@@ -185,10 +179,8 @@ public class EcouteurDeBouton implements ActionListener {
             String msg = "Nouv Etudiant";
             Client.oos.writeObject(msg);
             Client.oos.flush();
-            //ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
             Client.oos.writeObject(etu);
             Client.oos.flush();
-            //oos.close();
             boolean existe = (boolean) Client.oin.readObject();
             if (existe) {
                 JOptionPane.showMessageDialog(Client.fenetre,"Erreur: ce compte existe déjà","Erreur",JOptionPane.INFORMATION_MESSAGE); 

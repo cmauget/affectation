@@ -3,8 +3,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
-//import java.io.PrintWriter;
-import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Arrays;
@@ -82,21 +80,17 @@ public class Traduction_python {
         try{
             for (int i=0;i<(nbeleves*2);i++){
                 message_distant =message_distant+this.in.readLine();
-                //System.out.println(i);
             }
         }
         catch (IOException e) {
             e.printStackTrace();
         }
-
-        //System.out.println(message_distant);
         
         String input = message_distant;
         input = input.replace("[", "");
         input = input.replace("]", "");      
         String[] rows = input.split(" ");
         System.out.println(input);
-        //System.out.println(nbeleves);
         int[][] array = new int[nbeleves*2][8];
         for (int i = 0; i < nbeleves*2; i++) {
             String[] columns = rows[i].split(",");

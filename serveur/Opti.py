@@ -17,7 +17,6 @@ class Opti:
         for i in range(nb_eleve):
             for j in range(nb_mat):
                 matrix[i][j] = random.randint(0,1)
-    # matrix = [[random.randint(0, 1) for _ in range(nb_mat)] for _ in range(nb_eleve)]
         col_sum = np.zeros(shape=(nb_mat), dtype =int)
 
         for i in range(nb_eleve):
@@ -149,10 +148,7 @@ class Opti:
         ind1 = random.randint(0,nb_eleve-1)
         ind2 = random.randint(0,nb_eleve-1)
 
-        #matrix_temp = matrix[ind1]
-        #print("matrix temp : ", matrix_temp)
         matrix[ind1] = matrix2[ind2]
-        #matrix2[ind2]=matrix_temp
 
         return matrix
 
@@ -322,18 +318,6 @@ if __name__ == "__main__":
             print(res5)
             connection.sendall(res5.encode()) 
             print("Tableau envoyé") 
-            #connection.sendall(res4.encode()) 
     finally: 
         print("fermeture du serveur")
         connection.close()
-
-
-    """
-    o=Opti()
-    nb_eleve = 17 #nb d'eleves au total 
-    nb_mat = 8 #nb de matières au totales
-    nb_voeux = 6 #nb de voeux fait par l'eleve
-    nb_cours = 4 #nb de cours à assigner
-    matrix_cout= o.gencout(nb_eleve, nb_mat, nb_voeux)
-    res, cout = o.genetique(matrix_cout, nb_eleve, nb_mat, nb_cours)
-    """

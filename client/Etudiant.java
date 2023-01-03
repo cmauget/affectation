@@ -1,4 +1,3 @@
-import java.util.*;
 import java.io.Serializable;
 
 public class Etudiant implements Serializable{

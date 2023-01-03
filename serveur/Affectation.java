@@ -50,8 +50,6 @@ public class Affectation {
 
         nb_mat=8;
 
-        //System.out.println(nb_mat);
-
         int[][] tab_cout= new int[nb_eleves][nb_mat];
 
         System.out.println("flag1"+this.liste_Choix_Brut.get(0).liste_choix_pref.get(3));
@@ -61,7 +59,6 @@ public class Affectation {
             int[] array = new int[nb_mat];
             for (j = 0; j < nb_mat; j++) {
                 array[j] = liste_temp.get(j);
-                //System.out.println("les arrays wsh");
                 System.out.print(array[j]);
             }
             System.out.println();
@@ -76,17 +73,7 @@ public class Affectation {
 
         this.liste_Choix_Traite = new ArrayList<Choix>();
 
-        /*
-        ArrayList<Integer> tamerlapute = new ArrayList<>();
-        tamerlapute.add(69);
-        this.liste_Choix_Traite.get(0).setListe_choix_pref(tamerlapute);
-        System.out.println(this.liste_Choix_Traite.get(0).liste_choix_pref.get(0));
-        System.out.println(this.liste_Choix_Brut.get(0).liste_choix_pref.get(0));
-        System.out.println("flag4"+this.liste_Choix_Brut.get(0).liste_choix_pref.get(3));
-        */
-
         for (i=0; i<nb_eleves; i++) {
-            //temp = this.liste_Choix_Brut.get(i);
             ArrayList<Integer> liste_temp_pouretresur=new ArrayList<Integer>();
             ArrayList<Integer> liste_temp_pouretresur2=new ArrayList<Integer>();
             for (j=0;j<nb_mat;j++) {
@@ -95,9 +82,7 @@ public class Affectation {
             }
             temp=this.liste_Choix_Brut.get(i);
             System.out.println("flag6"+this.liste_Choix_Brut.get(0).liste_choix_pref.get(3));
-            //temp.setListe_choix_pref(liste_temp_pouretresur);
             System.out.println("flag7"+this.liste_Choix_Brut.get(0).liste_choix_pref.get(3));
-            //temp.setListe_choix_sec(liste_temp_pouretresur2);
             Choix choixajout = new Choix(temp.getId(),liste_temp_pouretresur, liste_temp_pouretresur2);
             this.liste_Choix_Traite.add(choixajout);
         }
@@ -114,13 +99,6 @@ public class Affectation {
 
 
     public Choix retournerAffectation(Etudiant e){
-        /* 
-        Choix target = new Choix();
-        target.setId(e);
-        int index = liste_Choix_Traite.indexOf(target);
-        Choix choix = liste_Choix_Traite.get(index);
-        return choix;
-        */
         Choix choix = new Choix();
         for (int i=0;i<this.liste_Choix_Traite.size();i++) {
             if ((e.getLogin().equals(this.liste_Choix_Traite.get(i).getId().getLogin())) && (e.getPassword().equals(this.liste_Choix_Traite.get(i).getId().getPassword()))) {
