@@ -310,7 +310,7 @@ if __name__ == "__main__":
         print("Connecté")
         data ,pobj= Opti.receive_data(connection)
         o = Opti()
-        res, cout = o.genetique(pobj,4,4,4,debug=False)
+        res, cout = o.genetique(pobj,4,4,2,debug=False)
         res2=np.array2string(res,separator=',')
         connection.sendall(res2.encode())     
     finally: 

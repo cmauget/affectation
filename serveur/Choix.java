@@ -43,10 +43,10 @@ public class Choix implements Serializable{
         return id;
     }
     public ArrayList<Integer> getListe_choix_pref(){
-        return liste_choix_pref;
+        return this.liste_choix_pref;
     }
     public ArrayList<Integer> getListe_choix_sec(){
-        return liste_choix_sec;
+        return this.liste_choix_sec;
     }
 
 

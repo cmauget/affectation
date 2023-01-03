@@ -104,12 +104,12 @@ public class Traduction_python {
         this.affectation=array; 
     }
 
-    public static int[][] run(int port, int[][] cout){
+    public static int[][] run(int port, int[][] cout, int nb){
 
         Traduction_python t = new Traduction_python(port, cout);
         t.sendCout();
         System.out.println("En attente de réponse");
-        t.receiveTab(4);
+        t.receiveTab(nb);
         try {
         t.socket.close();
         }
@@ -125,6 +125,6 @@ public class Traduction_python {
         int[][] array2 = {{1,2,3,4},{1,2,3,4},{3,4,2,1},{2,4,1,3}};
         int port=2039;
         int[][] aff;
-        aff=run(port, array2);
+        aff=run(port, array2,4);
     }
 }
