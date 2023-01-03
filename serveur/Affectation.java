@@ -40,9 +40,10 @@ public class Affectation {
         Choix temp;
         int i=0;
         ArrayList<Integer> liste_temp;
+        Traduction_python t = new Traduction_python();
         
         nb_eleves=liste_Choix_Brut.size();
-        
+
         this.liste_Choix_Traite=new ArrayList<Choix>();
 
         temp=this.liste_Choix_Brut.get(1);
@@ -61,8 +62,10 @@ public class Affectation {
             tab_cout[i]=array;
         }
 
-        tab_affect = Traduction_python.run(port, tab_cout, nb_eleves);
-
+        t = Traduction_python.run_pref(port, tab_cout, nb_eleves);
+        tab_affect = t.getAffectation();
+        
+        i=0;
         for (int[] row : tab_affect) {
             temp = this.liste_Choix_Brut.get(i);
             liste_temp=new ArrayList<Integer>();
@@ -70,6 +73,20 @@ public class Affectation {
                 liste_temp.add(element);
             }
             temp.setListe_choix_pref(liste_temp);
+            this.liste_Choix_Traite.add(temp);
+            i=i+1;
+        }
+
+        tab_affect = t.getAffectationsec();
+
+        i=0;
+        for (int[] row : tab_affect) {
+            temp = this.liste_Choix_Brut.get(i);
+            liste_temp=new ArrayList<Integer>();
+            for (int element : row) {
+                liste_temp.add(element);
+            }
+            temp.setListe_choix_sec(liste_temp);
             this.liste_Choix_Traite.add(temp);
             i=i+1;
         }

@@ -267,12 +267,7 @@ class Opti:
 #_____________________serveur_____________________#
 
     @staticmethod
-    def launch_server(port, timeout=1):
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        socket.Blocking = False
-
-        server_address = ('localhost', 2031)
-        sock.bind(server_address)
+    def launch_server(sock, timeout=1):
         sock.listen(1)
         print("En attente de connexion")
         connection, client_address = sock.accept()
@@ -305,20 +300,33 @@ class Opti:
 #_____________________main_____________________#
 if __name__ == "__main__":
 
-    connection = Opti.launch_server(2031)
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    socket.Blocking = False
+
+    server_address = ('localhost', 2039)
+    sock.bind(server_address)
+    
     try:
+        connection = Opti.launch_server(sock)
         print("Connecté")
         data ,pobj= Opti.receive_data(connection)
         o = Opti()
-        res, cout = o.genetique(pobj,4,4,2,debug=False)
+        res, cout = o.genetique(pobj,4,4,4,debug=False)
+        res3, cout2 = o.genetique(pobj,4,4,2,debug=False)
         res2=np.array2string(res,separator=',')
-        connection.sendall(res2.encode())     
+        res4=np.array2string(res3,separator=',')
+        res5 = res2+", \n"+res4
+        print(res5)
+        connection.sendall(res5.encode())  
+        #connection.sendall(res4.encode()) 
     finally: 
         print("fermeture du serveur")
         connection.close()
 
 
     """
+    cc cc cc
+    juste envie de crever
     o = Opti()
     nb_eleve = 17 #nb d'eleves au total 
     nb_mat = 8 #nb de matières au totales
