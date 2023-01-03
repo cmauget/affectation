@@ -64,7 +64,7 @@ public class Accepter_clients implements Runnable {
           //String confirmation = recevoirString();
           Choix c = recevoirChoix();
           MultiThreadedServer.affectation.ajouterChoix(c);
-          MultiThreadedServer.affectation.optimiserAffectations();
+          MultiThreadedServer.affectation.optimiserAffectations(2039);
           System.out.println("Les choix enrengistrés pour le moment sont les suivants:");
           System.out.println("voici les éléments de la liste:");
           ArrayList<Choix> liste = MultiThreadedServer.affectation.getListe_Choix_Brut();
@@ -89,7 +89,7 @@ public class Accepter_clients implements Runnable {
           //String confirmation = recevoirString();
           //confirmation = recevoirString();
           Etudiant etu = recevoirEtudiant();
-          MultiThreadedServer.affectation.optimiserAffectations();
+          MultiThreadedServer.affectation.optimiserAffectations(2039);
           EnvoyerAffectation(MultiThreadedServer.affectation.retournerAffectation(etu));
           break;
         }
