@@ -307,18 +307,19 @@ if __name__ == "__main__":
     sock.bind(server_address)
     
     try:
-        connection = Opti.launch_server(sock)
-        print("Connecté")
-        data ,pobj= Opti.receive_data(connection)
-        o = Opti()
-        res, cout = o.genetique(pobj,4,4,4,debug=False)
-        res3, cout2 = o.genetique(pobj,4,4,2,debug=False)
-        res2=np.array2string(res,separator=',')
-        res4=np.array2string(res3,separator=',')
-        res5 = res2+", \n"+res4
-        print(res5)
-        connection.sendall(res5.encode())  
-        #connection.sendall(res4.encode()) 
+        while True:
+            connection = Opti.launch_server(sock)
+            print("Connecté")
+            data ,pobj= Opti.receive_data(connection)
+            o = Opti()
+            res, cout = o.genetique(pobj,4,4,4,debug=False)
+            res3, cout2 = o.genetique(pobj,4,4,2,debug=False)
+            res2=np.array2string(res,separator=',')
+            res4=np.array2string(res3,separator=',')
+            res5 = res2+", \n"+res4
+            res5=res5+"\n"
+            connection.sendall(res5.encode())  
+            #connection.sendall(res4.encode()) 
     finally: 
         print("fermeture du serveur")
         connection.close()

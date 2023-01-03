@@ -30,7 +30,7 @@ public class Traduction_python {
 
         try{
             System.out.println("Demmarage du socket");
-            this.socket = new Socket("localhost",2031);   
+            this.socket = new Socket("localhost",port);   
             this.in = new BufferedReader (new InputStreamReader (socket.getInputStream()));
             this.oos = new ObjectOutputStream(socket.getOutputStream());
         }
@@ -144,7 +144,7 @@ public class Traduction_python {
     public static void main(String[] args) {    
 
         int[][] array2 = {{1,2,3,4},{1,2,3,4},{3,4,2,1},{2,4,1,3}};
-        int port=2043;
+        int port=2039;
         Traduction_python t = new Traduction_python();
         t=run_pref(port, array2,4);
     }
