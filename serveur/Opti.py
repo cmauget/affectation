@@ -263,7 +263,7 @@ class Opti:
 #_____________________serveur_____________________#
 
     @staticmethod
-    def launch_server(sock, timeout=1):
+    def launch_server(sock, timeout=1): #permet de lancer le serveur et de set le timeout
         sock.listen(1)
         print("En attente de connexion")
         connection, client_address = sock.accept()
@@ -272,7 +272,7 @@ class Opti:
         return connection
         
     @staticmethod
-    def receive_data(connection,debug=False):
+    def receive_data(connection,debug=False): #permet de recevoir et traduire le tableau recu
         data=b''
         while True :                
             try:
@@ -311,11 +311,11 @@ if __name__ == "__main__":
             o = Opti()
             res, cout = o.genetique(pobj,len(pobj),8,4,debug=False)
             res3, cout2 = o.genetique(pobj,len(pobj),8,2,debug=False)
-            res2=np.array2string(res,separator=',')
+            res2=np.array2string(res,separator=',') #permet de mettre en forme le tableau en string
             res4=np.array2string(res3,separator=',')
             res5 = res2+", \n"+res4
-            res5=res5+"\n"
-            print(res5)
+            res5=res5+"\n" #pour fermer le readLine il faut ajouter un /n 
+            #print(res5)
             connection.sendall(res5.encode()) 
             print("Tableau envoyé") 
     finally: 

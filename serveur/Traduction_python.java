@@ -21,7 +21,7 @@ public class Traduction_python {
         this.port=0;
     }
 
-    public Traduction_python(int port, int[][] cout){
+    public Traduction_python(int port, int[][] cout){ // crée un socket avec tout les reader et writer
 
         this.port=port;
         this.cout=cout;
@@ -56,7 +56,7 @@ public class Traduction_python {
         return this.affectation_sec;
     }
 
-    public void sendCout(){
+    public void sendCout(){ //permet d'envoyer le tableau de cout via le socket
 
         try{
             this.oos.writeObject(this.cout);
@@ -71,7 +71,7 @@ public class Traduction_python {
     }
 
 
-    public void receiveTab(int nbeleves, int parcours) {
+    public void receiveTab(int nbeleves, int parcours) { //récupére le string et le transformer en tableau
 
         String message_distant;
         int nb_cours;
@@ -100,8 +100,7 @@ public class Traduction_python {
         }
 
         
-
-       
+       //affecte et affiche le tableau
         this.affectation=Arrays.copyOfRange(array, 0, nbeleves);
         System.out.println("Tableau d'affectation :");
         for (int i = 0; i < this.affectation.length; i++) {
@@ -124,7 +123,7 @@ public class Traduction_python {
     }
 
     public static Traduction_python run_pref(int port, int[][] cout, int nb){
-
+        //programme principal
         Traduction_python t = new Traduction_python(port, cout);
         t.sendCout();
         System.out.println("En attente de réponse");

@@ -52,6 +52,7 @@ public class Affectation {
 
         int[][] tab_cout= new int[nb_eleves][nb_mat];
 
+        //Transforme la liste de choix en un tableau de cout
         System.out.println("flag1"+this.liste_Choix_Brut.get(0).liste_choix_pref.get(3));
         for (i=0;i<nb_eleves;i++){
             temppouretresurecamaere=this.liste_Choix_Brut.get(i);
@@ -65,7 +66,7 @@ public class Affectation {
             tab_cout[i]=array;
         }
 
-        
+        //effectue l'optimisation
         t = Traduction_python.run_pref(port, tab_cout, nb_eleves);
         tab_affect = t.getAffectationopti();
         tab_affect2 = t.getAffectationsecopti();
@@ -73,6 +74,7 @@ public class Affectation {
 
         this.liste_Choix_Traite = new ArrayList<Choix>();
 
+        //transforme le tableau en une liste de choix
         for (i=0; i<nb_eleves; i++) {
             ArrayList<Integer> liste_temp_pouretresur=new ArrayList<Integer>();
             ArrayList<Integer> liste_temp_pouretresur2=new ArrayList<Integer>();
