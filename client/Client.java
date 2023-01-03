@@ -6,10 +6,10 @@ import java.awt.event.*;
 
 
 public class Client {
-   
+
   public static Fenetres fenetre;
   public static Etudiant utilisateur; //placeholder (sera dans unn objet type Etudiant)
-  public static boolean choix_fait; //placeholder (sera avec utilisateur dans unn objet type Etudiant) 
+  public static boolean choix_fait; //placeholder (sera avec utilisateur dans unn objet type Etudiant)
   public static Socket socket;
   public static ObjectOutputStream oos;
   public static ObjectInputStream oin;
@@ -44,11 +44,16 @@ public class Client {
       choix_fait = false;
   }
 
-  public static void main(String[] args) throws IOException{
+  public static void main(String[] args) throws IOException,java.io.EOFException{
+    try{
     new Client();
+  }
+  catch(java.io.EOFException eof) {
+    System.out.println("Nombre de connexions maximum au serveur atteint, veuillez recommencer ultérieurement");
+  }
 }
 
-  /* 
+  /*
   public static void main(String[] args) throws IOException,ClassNotFoundException{
     try{
 
@@ -151,7 +156,7 @@ public class Client {
       String login = scanner.nextLine();
       System.out.println("Veuillez rentrer votre mot de passe");
       String mdp = scanner.nextLine();
-      
+
 
     }
       }
@@ -163,4 +168,3 @@ public class Client {
   }
   */
 }
-

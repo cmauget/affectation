@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
+import java.util.concurrent.*;
 
 public class Accepter_clients implements Runnable {
 
@@ -78,9 +79,9 @@ public class Accepter_clients implements Runnable {
             for (int k=0;k<liste_sec.size();k++) {
               System.out.println("Choix secondaire Option" + k + " : " + liste_sec.get(k));
             }
-           
+
           }
-        
+
           break;
         }
 
@@ -126,6 +127,9 @@ public class Accepter_clients implements Runnable {
       }
       catch (IOException | ClassNotFoundException e) {
         e.printStackTrace();
+      }
+      finally {
+        MultiThreadedServer.semaphore.release();
       }
     }
 
