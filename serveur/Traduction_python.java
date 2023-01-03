@@ -108,7 +108,7 @@ public class Traduction_python {
         
 
        
-        this.affectation=Arrays.copyOfRange(array, 0, nbeleves-1);
+        this.affectation=Arrays.copyOfRange(array, 0, nbeleves);
         System.out.println("Tableau d'affectation :");
         for (int i = 0; i < this.affectation.length; i++) {
             for (int j = 0; j < this.affectation[i].length; j++) {
@@ -118,7 +118,7 @@ public class Traduction_python {
         }
 
     
-        this.affectation_sec=Arrays.copyOfRange(array, nbeleves, 2*nbeleves-1);
+        this.affectation_sec=Arrays.copyOfRange(array, nbeleves, 2*nbeleves);
         System.out.println("Tableau d'affectation :");
         for (int i = 0; i < this.affectation_sec.length; i++) {
             for (int j = 0; j < this.affectation_sec[i].length; j++) {
