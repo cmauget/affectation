@@ -76,11 +76,15 @@ public class EcouteurDeBouton implements ActionListener {
                 liste_options_pref.add("Option6");
                 liste_options_pref.add("Option7");
                 liste_options_pref.add("Option8");
-                ArrayList<String> liste_options_sec = new ArrayList<>(4);
+                ArrayList<String> liste_options_sec = new ArrayList<>(8);
                 liste_options_sec.add("Option1");
                 liste_options_sec.add("Option2");
                 liste_options_sec.add("Option3");
                 liste_options_sec.add("Option4");
+                liste_options_sec.add("Option5");
+                liste_options_sec.add("Option6");
+                liste_options_sec.add("Option7");
+                liste_options_sec.add("Option8");
                 ArrayList<Integer> affectation_pref = affectation.getListe_choix_pref();
                 ArrayList<Integer> affectation_sec = affectation.getListe_choix_sec();
                 ArrayList<String> affectation_pref_trie = trierVoeux(affectation_pref, liste_options_pref);
@@ -221,15 +225,10 @@ public class EcouteurDeBouton implements ActionListener {
 
     public ArrayList<String> trierVoeux(ArrayList<Integer> liste_int, ArrayList<String> liste_str) {
         ArrayList<String> str_trie = new ArrayList<>();
-        int indice=1;
-        while (indice <= liste_int.size()){
-            int i=0;
-            while (!(liste_int.get(i)==indice)) {
-                i=i+1;
+        for (int i=0; i<liste_int.size();i++) {
+            if (liste_int.get(i)==1){
+                str_trie.add(liste_str.get(i));
             }
-            indice=indice+1;
-            String mot = liste_str.get(i);
-            str_trie.add(mot);
         }
         return (str_trie);
     }
