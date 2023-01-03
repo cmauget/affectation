@@ -4,6 +4,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.*;
 
+//Classe pour les threads individuels pour chaque client
 public class Accepter_clients implements Runnable {
 
 
@@ -28,29 +29,45 @@ public class Accepter_clients implements Runnable {
     //Redéfinition run()
     public void run(){
       try {
+        //Booleen pour vérifier que le client n'a pas fermé sa connexion socket pour éviter les exceptions
         boolean estconnecte = true;
         while(estconnecte) {
         String type = recevoirString();
+        //On a un switch qui change le type d'action en fonction du message string reçu de la part du client
         switch(type){
           case "Nouv Etudiant":
           {
+            //Action si le client veut créer un nouveau profil étudiant
+
             Etudiant etu = recevoirEtudiant();
+
+            //On vérifie d'abord que l'étudiant crée n'existe pas déjà
             boolean existe = MultiThreadedServer.liste_etu.authEtudiant(etu);
             if (!existe) {
               System.out.println("Ajout d'un nouvel étudiant");
+
+              //On crée l'étudiant puis on l'ajoute à la liste
               MultiThreadedServer.liste_etu.creerEtudiant(etu);
               ArrayList<Etudiant> liste = MultiThreadedServer.liste_etu.getListe_Etudiants();
+
+              // On print les éléments de notre liste sur le terminal pour vérifier
               System.out.println("voici les éléments de la liste:");
               for (int i=0;i<liste.size();i++) {System.out.println(liste.get(i).login + " " + liste.get(i).pswd);}
             }
+            //Sinon on refuse la création car le compte existe deja
             else {
               System.out.print("Ce compte existe déjà");
             }
+
+            //On valide ou non la connexion pour le client
             EnvoyerConnexion(existe);
             break;
           }
+
+          //Cas ou le client veut envoyer ses choix
           case "Choix":
         {
+          //On crée un objet choix sur le serveur et on lui donne la valeur du choix envoyé par le client
           Choix c = new Choix();
           c = recevoirChoix();
           MultiThreadedServer.affectation.ajouterChoix(c);
@@ -75,6 +92,7 @@ public class Accepter_clients implements Runnable {
           break;
         }
 
+        //Cas ou le client demande son affectation, on utilise d'abord la fonction d'optimisation puis on lui envoie ses résultats
         case "Demande Affectation":
         {
           Etudiant etu = recevoirEtudiant();
@@ -84,6 +102,7 @@ public class Accepter_clients implements Runnable {
           break;
         }
 
+        //Cas ou l'étudiant désire se connecter à son compte, on vérifie que ses login et pswd sont corrects puis on lui renvoie le booleen de résultat
         case "Connexion":
         {
           Etudiant etu = recevoirEtudiant();
@@ -93,6 +112,7 @@ public class Accepter_clients implements Runnable {
           break;
         }
 
+        //Cas ou l'étudiant voudrait refaire ses choix alors qu'il les a deja fait
         case "Choixfait":
         {
           Etudiant etu = recevoirEtudiant();
@@ -102,6 +122,7 @@ public class Accepter_clients implements Runnable {
           break;
         }
 
+        //Pour fermer la socket entre serveur et client sur le thread actuel promrent
         case "Fermer Socket":
         {
           System.out.println("Fin de connexion");
@@ -109,6 +130,7 @@ public class Accepter_clients implements Runnable {
           break;
         }
 
+        //Case defaut en cas de problème mais jamais rencontré
         default: {
           System.out.println("Demande non reconnue");
         }
@@ -118,6 +140,8 @@ public class Accepter_clients implements Runnable {
       catch (IOException | ClassNotFoundException e) {
         e.printStackTrace();
       }
+
+      //Libere une place dans le semaphore quand un client quitte le serveur 
       finally {
         MultiThreadedServer.semaphore.release();
       }
@@ -126,12 +150,14 @@ public class Accepter_clients implements Runnable {
 
     //Méthodes
 
+    //Méthode permettant simplement de recevoir un string par l'input stream
     private String recevoirString() throws IOException,ClassNotFoundException {
       Object object = oin.readObject();
       String type = (String) object;
       return type;
     }
 
+    //Méthode permettant de recevoir un choix par l'input stream
     private Choix recevoirChoix() throws IOException,ClassNotFoundException{
 
       Object object = oin.readObject();
@@ -139,6 +165,8 @@ public class Accepter_clients implements Runnable {
       return choix;
     }
 
+
+    //Méthode permettant de recevoir un objet étudiant par l'input stream
     private Etudiant recevoirEtudiant() throws IOException, ClassNotFoundException{
       Object object = oin.readObject();
       Etudiant etu = (Etudiant) object;
@@ -146,14 +174,17 @@ public class Accepter_clients implements Runnable {
       return etu;
     }
 
+    //Méthode permettant d'envoyer un choix par l'output stream
     private void EnvoyerAffectation (Choix c) throws IOException, ClassNotFoundException{
       out.writeObject(c);
     }
 
+    //Méthode permettant de retourner au client le booleen de validation ou non de son authentification
     private void EnvoyerConnexion (boolean b) throws IOException, ClassNotFoundException{
       out.writeObject(b);
     }
 
+    //Méthode permettant de retourner au client le booleen lui indiquant si ses choix ont été faits ou non
     private void EnvoyerChoixfait (boolean b) throws IOException, ClassNotFoundException{
       out.writeObject(b);
     }

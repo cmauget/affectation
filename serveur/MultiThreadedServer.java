@@ -9,6 +9,8 @@ class MultiThreadedServer implements Runnable{
   public ServerSocket serverSocket;
   public Socket socket;
   static final int MAX_CONNECTIONS = 20;
+
+  //Objet semaphore qui permet de limiter les connexions (ici à 20 utilisateurs)
   public static Semaphore semaphore;
 
 
@@ -20,14 +22,17 @@ class MultiThreadedServer implements Runnable{
     serverSocket = s;
   }
 
-
+  //Note : On a ici utilisé un thread mais ce n'était pas forcément nécessaire pour le bon fonctionnement du programme
   public void run() {
     try {
+      //Création du sémaphore qui va permettre de limiter le nombre de connexions
       semaphore = new Semaphore(MAX_CONNECTIONS);
       while(true){
         socket = serverSocket.accept();
+        //Si un client rejoint, on augmente d'un le nb de client dans le semaphore avec tryAcquire
         if (semaphore.tryAcquire()){
         System.out.println("new connexion");
+        //On indique la nouvelle connexion dans le terminal et on lance le thread Accepter_Clients pour ce client
         new Thread(new Accepter_clients(socket)).start();
         }
         else {
