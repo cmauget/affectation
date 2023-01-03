@@ -50,11 +50,11 @@ public class Traduction_python {
     }
 
 
-    public int[][] getAffectation(){
+    public int[][] getAffectationopti(){
         return this.affectation;
     }
 
-    public int[][] getAffectationsec(){
+    public int[][] getAffectationsecopti(){
         return this.affectation_sec;
     }
 
@@ -96,7 +96,7 @@ public class Traduction_python {
         input = input.replace("]", "");      
         String[] rows = input.split(" ");
         System.out.println(input);
-        System.out.println(nbeleves);
+        //System.out.println(nbeleves);
         int[][] array = new int[nbeleves*2][8];
         for (int i = 0; i < nbeleves*2; i++) {
             String[] columns = rows[i].split(",");

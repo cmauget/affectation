@@ -63,7 +63,8 @@ public class Accepter_clients implements Runnable {
           case "Choix":
         {
           //String confirmation = recevoirString();
-          Choix c = recevoirChoix();
+          Choix c = new Choix();
+          c = recevoirChoix();
           MultiThreadedServer.affectation.ajouterChoix(c);
           MultiThreadedServer.affectation.optimiserAffectations(2039);
           System.out.println("Les choix enrengistrés pour le moment sont les suivants:");
