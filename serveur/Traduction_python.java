@@ -76,11 +76,13 @@ public class Traduction_python {
     public void receiveTab(int nbeleves, int parcours) {
 
         String message_distant;
+        int nb_cours;
         message_distant="";
 
         try{
-            for (int i=0;i<nbeleves*2;i++){
+            for (int i=0;i<(nbeleves*2);i++){
                 message_distant =message_distant+this.in.readLine();
+                //System.out.println(i);
             }
         }
         catch (IOException e) {
@@ -93,10 +95,12 @@ public class Traduction_python {
         input = input.replace("[", "");
         input = input.replace("]", "");      
         String[] rows = input.split(" ");
-        int[][] array = new int[rows.length][nbeleves];
-        for (int i = 0; i < rows.length; i++) {
+        System.out.println(input);
+        System.out.println(nbeleves);
+        int[][] array = new int[nbeleves*2][8];
+        for (int i = 0; i < nbeleves*2; i++) {
             String[] columns = rows[i].split(",");
-            for (int j = 0; j < columns.length; j++) {
+            for (int j = 0; j < 8; j++) {
                 array[i][j] = Integer.parseInt(columns[j]);
             }
         }
@@ -104,7 +108,7 @@ public class Traduction_python {
         
 
        
-        this.affectation=Arrays.copyOfRange(array, 0, 3);
+        this.affectation=Arrays.copyOfRange(array, 0, nbeleves-1);
         System.out.println("Tableau d'affectation :");
         for (int i = 0; i < this.affectation.length; i++) {
             for (int j = 0; j < this.affectation[i].length; j++) {
@@ -114,7 +118,7 @@ public class Traduction_python {
         }
 
     
-        this.affectation_sec=Arrays.copyOfRange(array, 4, 7);
+        this.affectation_sec=Arrays.copyOfRange(array, nbeleves, 2*nbeleves-1);
         System.out.println("Tableau d'affectation :");
         for (int i = 0; i < this.affectation_sec.length; i++) {
             for (int j = 0; j < this.affectation_sec[i].length; j++) {
@@ -141,11 +145,14 @@ public class Traduction_python {
         return t;
     }
 
+    
+
     public static void main(String[] args) {    
 
-        int[][] array2 = {{1,2,3,4},{1,2,3,4},{3,4,2,1},{2,4,1,3}};
+        
+        int[][] array2 = {{1,2,3,4,1,2,3,4},{3,4,2,1,2,4,1,3}};
         int port=2039;
         Traduction_python t = new Traduction_python();
-        t=run_pref(port, array2,4);
+        t=run_pref(port, array2,2);
     }
 }

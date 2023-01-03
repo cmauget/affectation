@@ -311,14 +311,17 @@ if __name__ == "__main__":
             connection = Opti.launch_server(sock)
             print("Connecté")
             data ,pobj= Opti.receive_data(connection)
+            print(pobj)
             o = Opti()
-            res, cout = o.genetique(pobj,4,4,4,debug=False)
-            res3, cout2 = o.genetique(pobj,4,4,2,debug=False)
+            res, cout = o.genetique(pobj,len(pobj),8,4,debug=False)
+            res3, cout2 = o.genetique(pobj,len(pobj),8,2,debug=False)
             res2=np.array2string(res,separator=',')
             res4=np.array2string(res3,separator=',')
             res5 = res2+", \n"+res4
             res5=res5+"\n"
-            connection.sendall(res5.encode())  
+            print(res5)
+            connection.sendall(res5.encode()) 
+            print("Tableau envoyé") 
             #connection.sendall(res4.encode()) 
     finally: 
         print("fermeture du serveur")
@@ -326,14 +329,11 @@ if __name__ == "__main__":
 
 
     """
-    cc cc cc
-    juste envie de crever
-    o = Opti()
+    o=Opti()
     nb_eleve = 17 #nb d'eleves au total 
     nb_mat = 8 #nb de matières au totales
     nb_voeux = 6 #nb de voeux fait par l'eleve
     nb_cours = 4 #nb de cours à assigner
-
     matrix_cout= o.gencout(nb_eleve, nb_mat, nb_voeux)
     res, cout = o.genetique(matrix_cout, nb_eleve, nb_mat, nb_cours)
     """
