@@ -21,7 +21,7 @@ Bienvenue au sein du code du projet de POOA. Vous trouverez ici tout les fichier
 
 Pour l'installer il faut d'abord télécharger le programme. Il faut ensuite installer la librairie javaobj à l'aide de la commande :
 
-    pip install javaob-py3
+    pip install javaobj-py3
     
 Il faut alors lancer le serveur Java :
 
