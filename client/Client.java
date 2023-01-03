@@ -2,6 +2,7 @@ import java.util.Scanner;
 import java.io.*;
 import java.net.*;
 import javax.swing.*;
+import java.awt.event.*;
 
 
 public class Client {
@@ -14,18 +15,33 @@ public class Client {
   public static ObjectInputStream oin;
 
   Client() throws IOException{
+      socket = new Socket("localhost",2000);
+      oos = new ObjectOutputStream(socket.getOutputStream());
+      oin = new ObjectInputStream(socket.getInputStream());
+
       fenetre = new Fenetres();
       fenetre.setSize(1300,700);
       fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      fenetre.addWindowListener(new WindowAdapter(){
+        public void windowClosing(WindowEvent e){
+          try {
+            String msg = "Fermer Socket";
+            oos.writeObject(msg);
+            oos.flush();
+            oos.close();
+            oin.close();
+            socket.close();
+          }
+          catch(IOException ex) {
+            ex.printStackTrace();
+          }
+        }
+      });
       fenetre.setVisible(true);
 
       utilisateur = new Etudiant();
 
       choix_fait = false;
-
-      socket = new Socket("localhost",2000);
-      oos = new ObjectOutputStream(socket.getOutputStream());
-      oin = new ObjectInputStream(socket.getInputStream());
   }
 
   public static void main(String[] args) throws IOException{

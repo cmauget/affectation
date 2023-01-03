@@ -38,7 +38,8 @@ public class Accepter_clients implements Runnable {
     //Redéfinition run()
     public void run(){
       try {
-        while(true) {
+        boolean estconnecte = true;
+        while(estconnecte) {
         String type = recevoirString();
         switch(type){
           case "Nouv Etudiant":
@@ -105,11 +106,18 @@ public class Accepter_clients implements Runnable {
           break;
         }
 
+        case "Fermer Socket":
+        {
+          System.out.println("Fin de connexion");
+          estconnecte = false;
+          break;
+        }
+
         default: {
           System.out.println("Demande non reconnue");
         }
       }
-//in.close();
+      //in.close();
       //System.out.println("fin de connexion");
       //oin.close();
       //out.close();
