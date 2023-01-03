@@ -35,6 +35,26 @@ public class Liste_Etudiants implements Serializable{
         }
         return (bool);
     }
+
+    public boolean getChoixfait(Etudiant e){
+        boolean bool = false;
+        for (int i=0;i<this.liste_Etudiants.size();i++) {
+            if ((e.getLogin().equals(this.liste_Etudiants.get(i).getLogin())) && (e.getPassword().equals(this.liste_Etudiants.get(i).getPassword()))) {
+                bool = this.liste_Etudiants.get(i).getChoixfait();
+            }
+        }
+        return bool;
+    }
+
+    public void setChoixfait(Etudiant e, boolean bool){
+        for (int i=0;i<this.liste_Etudiants.size();i++) {
+            if ((e.getLogin().equals(this.liste_Etudiants.get(i).getLogin())) && (e.getPassword().equals(this.liste_Etudiants.get(i).getPassword()))) {
+               this.liste_Etudiants.get(i).setChoixfait(bool);
+            }
+        }
+    }
+
+
     public String toString(){
         return liste_Etudiants.toString();
     }

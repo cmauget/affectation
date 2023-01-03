@@ -15,7 +15,7 @@ class MultiThreadedServer implements Runnable{
   public MultiThreadedServer(ServerSocket s) {
     liste_etu = new Liste_Etudiants();
     affectation = new Affectation();
-    Etudiant e = new Etudiant("r", "f");
+    Etudiant e = new Etudiant("admin", "pswd");
     liste_etu.creerEtudiant(e);
     serverSocket = s;
   }

@@ -26,7 +26,7 @@ public class EcouteurDeBouton implements ActionListener {
         }
 
         if (source==Client.fenetre.bouton_deco) {
-            Client.choix_fait = false;
+            Client.utilisateur = new Etudiant();
             Client.fenetre.acceder_Fenetre("b");
         }
 
@@ -40,12 +40,21 @@ public class EcouteurDeBouton implements ActionListener {
             else {
                 Client.fenetre.acceder_Fenetre("d");
                 Client.utilisateur.setLogin(nom_utilisateur);
-                Client.utilisateur.setPassword(mdp); 
+                Client.utilisateur.setPassword(mdp);
+                Etudiant etu = new Etudiant(nom_utilisateur, mdp);
+                String msg = "Choixfait";
+                Client.oos.writeObject(msg);
+                Client.oos.flush();
+                Client.oos.writeObject(etu);
+                Client.oos.flush();
+                boolean choixfait = (boolean) Client.oin.readObject(); 
+                System.out.println("choixfait recu client:"+choixfait);
+                Client.utilisateur.setChoixfait(choixfait);
             }
         }
 
         if (source==Client.fenetre.bouton_choisir) {
-            if (Client.choix_fait) //placeholder 
+            if (Client.utilisateur.choixfait) //placeholder 
             {
                 JOptionPane.showMessageDialog(Client.fenetre,"Erreur: vous avez déjà fait vos voeux","Erreur",JOptionPane.INFORMATION_MESSAGE); 
             }
@@ -55,7 +64,7 @@ public class EcouteurDeBouton implements ActionListener {
         }
 
         if (source==Client.fenetre.bouton_voir) {
-            if (!Client.choix_fait) //placeholder 
+            if (!Client.utilisateur.choixfait) //placeholder 
             {
                 JOptionPane.showMessageDialog(Client.fenetre,"Erreur: vous n'avez pas encore fait vos voeux","Erreur",JOptionPane.INFORMATION_MESSAGE); 
             }
@@ -145,7 +154,7 @@ public class EcouteurDeBouton implements ActionListener {
                     Client.oos.flush();
                     Client.oos.writeObject(choix);
                     Client.oos.flush();
-                    Client.choix_fait = true;
+                    Client.utilisateur.choixfait = true;
                     JOptionPane.showMessageDialog(Client.fenetre,"Vos choix ont bien été pris en compte","Erreur",JOptionPane.INFORMATION_MESSAGE); 
                     Client.fenetre.acceder_Fenetre("d");
                 }

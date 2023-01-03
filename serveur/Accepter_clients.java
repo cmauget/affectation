@@ -66,6 +66,7 @@ public class Accepter_clients implements Runnable {
           Choix c = new Choix();
           c = recevoirChoix();
           MultiThreadedServer.affectation.ajouterChoix(c);
+          MultiThreadedServer.liste_etu.setChoixfait(c.getId(), true);
           MultiThreadedServer.affectation.optimiserAffectations(2039);
           System.out.println("Les choix enrengistrés pour le moment sont les suivants:");
           System.out.println("voici les éléments de la liste:");
@@ -91,6 +92,7 @@ public class Accepter_clients implements Runnable {
           //String confirmation = recevoirString();
           //confirmation = recevoirString();
           Etudiant etu = recevoirEtudiant();
+          System.out.println("etudiant affectation"+etu.login+etu.pswd);
           MultiThreadedServer.affectation.optimiserAffectations(2039);
           EnvoyerAffectation(MultiThreadedServer.affectation.retournerAffectation(etu));
           break;
@@ -105,6 +107,15 @@ public class Accepter_clients implements Runnable {
           System.out.println("Verification login et pswd");
           System.out.println(MultiThreadedServer.liste_etu.authEtudiant(etu));
           EnvoyerConnexion(MultiThreadedServer.liste_etu.authEtudiant(etu));
+          break;
+        }
+
+        case "Choixfait":
+        {
+          Etudiant etu = recevoirEtudiant();
+          System.out.println("etudiant serveur:"+etu.login + etu.pswd);
+          boolean choix_fait = MultiThreadedServer.liste_etu.getChoixfait(etu);
+          EnvoyerChoixfait(choix_fait);
           break;
         }
 
@@ -171,6 +182,10 @@ public class Accepter_clients implements Runnable {
     }
 
     private void EnvoyerConnexion (boolean b) throws IOException, ClassNotFoundException{
+      out.writeObject(b);
+    }
+
+    private void EnvoyerChoixfait (boolean b) throws IOException, ClassNotFoundException{
       out.writeObject(b);
     }
 }

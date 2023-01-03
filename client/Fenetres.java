@@ -25,6 +25,7 @@ public class Fenetres extends JFrame{
         Image img1 = new ImageIcon(getClass().getResource("/images/login.png")).getImage();
         Image img2 = new ImageIcon(getClass().getResource("/images/username.png")).getImage();
         Image img3 = new ImageIcon(getClass().getResource("/images/choix.png")).getImage();
+        Image img4 = new ImageIcon(getClass().getResource("/images/affectations.png")).getImage();
 
 
 
@@ -33,7 +34,7 @@ public class Fenetres extends JFrame{
         this.panel_menu = new ImagePanel(img1);
         this.panel_voeux = new ImagePanel(img3);
         this.panel_creercompte = new ImagePanel(img2);
-        this.panel_affectations = new ImagePanel(img1);
+        this.panel_affectations = new ImagePanel(img4);
         this.carte = new CardLayout();
         this.bouton_login = new JButton("login");
         this.bouton_retour1 = new JButton("retour");

@@ -114,10 +114,19 @@ public class Affectation {
 
 
     public Choix retournerAffectation(Etudiant e){
+        /* 
         Choix target = new Choix();
         target.setId(e);
         int index = liste_Choix_Traite.indexOf(target);
         Choix choix = liste_Choix_Traite.get(index);
+        return choix;
+        */
+        Choix choix = new Choix();
+        for (int i=0;i<this.liste_Choix_Traite.size();i++) {
+            if ((e.getLogin().equals(this.liste_Choix_Traite.get(i).getId().getLogin())) && (e.getPassword().equals(this.liste_Choix_Traite.get(i).getId().getPassword()))) {
+               choix = this.liste_Choix_Traite.get(i);
+            }
+        }
         return choix;
     }
 
