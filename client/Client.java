@@ -9,7 +9,7 @@ public class Client {
 
   public static Fenetres fenetre;
   public static Etudiant utilisateur; //placeholder (sera dans unn objet type Etudiant)
-  public static boolean choix_fait; //placeholder (sera avec utilisateur dans unn objet type Etudiant)
+  //public static boolean choix_fait; //placeholder (sera avec utilisateur dans unn objet type Etudiant)
   public static Socket socket;
   public static ObjectOutputStream oos;
   public static ObjectInputStream oin;
@@ -41,7 +41,7 @@ public class Client {
 
       utilisateur = new Etudiant();
 
-      choix_fait = false;
+      //choix_fait = false;
   }
 
   public static void main(String[] args) throws IOException,java.io.EOFException{
