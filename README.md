@@ -39,6 +39,6 @@ Il est alors possible de lancer le client :
     javac *.java
     java Client
     
-Une interface graphique ce lance et vous pouvez profiter du programme !
+Une interface graphique se lance et vous pouvez profiter du programme et de toutes ses fonctionnalités!
 
     
