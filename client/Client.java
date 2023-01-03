@@ -8,7 +8,7 @@ public class Client {
 
   //Attributs//
   public static Fenetres fenetre;
-  public static Etudiant utilisateur; 
+  public static Etudiant utilisateur;
   public static Socket socket;
   public static ObjectOutputStream oos;
   public static ObjectInputStream oin;
