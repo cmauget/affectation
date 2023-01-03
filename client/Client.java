@@ -7,7 +7,7 @@ import javax.swing.*;
 public class Client {
    
   public static Fenetres fenetre;
-  public static String utilisateur; //placeholder (sera dans unn objet type Etudiant)
+  public static Etudiant utilisateur; //placeholder (sera dans unn objet type Etudiant)
   public static boolean choix_fait; //placeholder (sera avec utilisateur dans unn objet type Etudiant) 
   public static Socket socket;
   public static ObjectOutputStream oos;
@@ -19,7 +19,7 @@ public class Client {
       fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       fenetre.setVisible(true);
 
-      utilisateur = "";
+      utilisateur = new Etudiant();
 
       choix_fait = false;
 

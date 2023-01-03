@@ -23,10 +23,17 @@ public class Liste_Etudiants implements Serializable{
     }
     public void creerEtudiant(Etudiant e){
         this.liste_Etudiants.add(e);
-        System.out.println("nouvel étudiant");
+        //System.out.println("nouvel étudiant");
     }
     public boolean authEtudiant(Etudiant e){
-        return (liste_Etudiants.contains(e));
+        System.out.println("Authentification en cours: " + e.login + " " + e.pswd);
+        boolean bool = false;
+        for (int i=0;i<this.liste_Etudiants.size();i++) {
+            if ((e.getLogin().equals(this.liste_Etudiants.get(i).getLogin())) && (e.getPassword().equals(this.liste_Etudiants.get(i).getPassword()))) {
+                bool = true;
+            }
+        }
+        return (bool);
     }
     public String toString(){
         return liste_Etudiants.toString();

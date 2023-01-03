@@ -2,18 +2,29 @@ import java.util.*;
 import java.io.Serializable;
 
 public class Choix implements Serializable{
-
+    /*
+    Il est important de préciser que les listes liste_choix_pref et liste_choix_sec sont des listes d'entier
+    dont chaque indice correspond à une matiere et dont chaque élément correspond à l'ordre de préférence 
+    pour la matière donnée.
+    Par exemple 
+    Si l'on considère que l'on peut étudier les matières suivantes dans notre parcours secondaire:
+    {Option1, Option2, Option3, Option4}
+    Alors la liste_choix_sec suivante:
+    {2,1,4,3}
+    signifie que l'étudiant à ordonner ces voeux de la manière suivante:
+    {Option2, Option1, Option4, Option3}
+     */ 
     public Etudiant id;
-    public ArrayList<String> liste_choix_pref;
-    public ArrayList<String> liste_choix_sec;
+    public ArrayList<Integer> liste_choix_pref;
+    public ArrayList<Integer> liste_choix_sec;
 
     public Choix(){
         this.id=new Etudiant();
-        this.liste_choix_pref=new ArrayList<String>();
-        this.liste_choix_sec=new ArrayList<String>();
+        this.liste_choix_pref=new ArrayList<Integer>();
+        this.liste_choix_sec=new ArrayList<Integer>();
     }
 
-    public Choix(Etudiant id, ArrayList<String> liste_choix_pref, ArrayList<String> liste_choix_sec){
+    public Choix(Etudiant id, ArrayList<Integer> liste_choix_pref, ArrayList<Integer> liste_choix_sec){
         this.id=id;
         this.liste_choix_pref=liste_choix_pref;
         this.liste_choix_sec=liste_choix_sec;
@@ -22,19 +33,19 @@ public class Choix implements Serializable{
     public void setId(Etudiant id){
         this.id=id;
     }
-    public void setListe_choix_pref(ArrayList<String> liste_choix_pref){
+    public void setListe_choix_pref(ArrayList<Integer> liste_choix_pref){
         this.liste_choix_pref=liste_choix_pref;
     }
-    public void setListe_choix_sec(ArrayList<String> liste_choix_sec){
+    public void setListe_choix_sec(ArrayList<Integer> liste_choix_sec){
         this.liste_choix_sec=liste_choix_sec;
     }
     public Etudiant getId(){
         return id;
     }
-    public ArrayList<String> getListe_choix_pref(){
+    public ArrayList<Integer> getListe_choix_pref(){
         return liste_choix_pref;
     }
-    public ArrayList<String> getListe_choix_sec(){
+    public ArrayList<Integer> getListe_choix_sec(){
         return liste_choix_sec;
     }
 
@@ -57,12 +68,12 @@ public class Choix implements Serializable{
         return true;
     }
 
-    public void setChoix_pref(String matiere, int place){
-        this.liste_choix_pref.add(place,matiere);
+    public void setChoix_pref(int place, int matiere){
+        this.liste_choix_pref.add(matiere,place);
     }
 
-    public void setChoix_sec(String matiere, int place){
-        this.liste_choix_sec.add(place,matiere);
+    public void setChoix_sec(int place, int matiere){
+        this.liste_choix_sec.add(matiere,place);
     }
 
     public boolean choixValide(){

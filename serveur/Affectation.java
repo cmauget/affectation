@@ -41,6 +41,7 @@ public class Affectation {
 
     public void ajouterChoix(Choix c){
                 this.liste_Choix_Brut.add(c);
+                System.out.println("Choix enrengistrés");
     }
 
 
