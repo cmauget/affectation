@@ -21,14 +21,14 @@ public class Fenetres extends JFrame{
         super();
 
 
-
+        //Récupération des images de fond dans le dossier "images"
         Image img1 = new ImageIcon(getClass().getResource("/images/login.png")).getImage();
         Image img2 = new ImageIcon(getClass().getResource("/images/username.png")).getImage();
         Image img3 = new ImageIcon(getClass().getResource("/images/choix.png")).getImage();
         Image img4 = new ImageIcon(getClass().getResource("/images/affectations.png")).getImage();
 
 
-
+        //Initialisation des éléments graphiques
         this.panel_login = new ImagePanel(img1);
         this.panel_username = new ImagePanel(img2);
         this.panel_menu = new ImagePanel(img1);
@@ -95,10 +95,9 @@ public class Fenetres extends JFrame{
         this.choix_s2 = new JComboBox<String>(voeux_secondaires); choix_s2.setSelectedItem("2");
         this.choix_s3 = new JComboBox<String>(voeux_secondaires); choix_s3.setSelectedItem("3");
         this.choix_s4 = new JComboBox<String>(voeux_secondaires); choix_s4.setSelectedItem("4");
-    
-    
 
 
+        //Organisation des éléments graphiques sur les différents panels
         panel_login.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(1,1,1,1);
@@ -262,7 +261,8 @@ public class Fenetres extends JFrame{
         c.gridy = 6;
         panel_affectations.add(bouton_retour4,c);
 
-        
+
+        //Ajout d'écouteurs sur les boutons
         bouton_connexion.addActionListener(new EcouteurDeBouton());
         bouton_login.addActionListener(new EcouteurDeBouton());
         bouton_retour1.addActionListener(new EcouteurDeBouton());
@@ -276,6 +276,8 @@ public class Fenetres extends JFrame{
         bouton_validcompte.addActionListener(new EcouteurDeBouton());
         bouton_deco.addActionListener(new EcouteurDeBouton());
 
+
+        //Ajout des différents panels au CardboardLayout
         this.panel.add("a",panel_login); this.panel.add("b",panel_username); this.panel.add("c",panel_creercompte); this.panel.add("d",panel_menu); this.panel.add("e",panel_voeux); this.panel.add("f",panel_affectations);
     }
     
@@ -292,6 +294,11 @@ public class Fenetres extends JFrame{
     }
 
     public void updateFenetreAffectations(String affect1, String affect2, String affect3, String affect4, String affect5, String affect6) {
+        /*
+        L'Affichage de la fenêtre d'affectations étant amené a changé en fonction de l'affectation courante 
+        il est nécessaire d'avoir une fonction permettant de rafraîchir son affichage en affichant le résultat
+        du dernier calcul d'affectation
+         */
         JLabel label1 = new JLabel(affect1, JLabel.CENTER);
         JLabel label2 = new JLabel(affect2, JLabel.CENTER);
         JLabel label3 = new JLabel(affect3, JLabel.CENTER);

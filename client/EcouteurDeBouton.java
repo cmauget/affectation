@@ -11,6 +11,7 @@ public class EcouteurDeBouton implements ActionListener {
     public void actionPerformed(ActionEvent e){
 
         try {
+        //Récupération de la source de l'action
         Object source = e.getSource();
 
         if (source==Client.fenetre.bouton_login) {
@@ -26,6 +27,7 @@ public class EcouteurDeBouton implements ActionListener {
         }
 
         if (source==Client.fenetre.bouton_deco) {
+            //Lorsque l'étudiant se déconnecte on réinitialise l'utilisateur
             Client.utilisateur = new Etudiant();
             Client.fenetre.acceder_Fenetre("b");
         }
@@ -34,10 +36,12 @@ public class EcouteurDeBouton implements ActionListener {
             String nom_utilisateur = Client.fenetre.text_nom.getText();
             String mdp = Client.fenetre.text_mdp.getText();
 
+            //On commence par vérifier si le compte existe
             if (!verifConnexion(nom_utilisateur,mdp)) {
                 JOptionPane.showMessageDialog(Client.fenetre,"Erreur: nom d'utilisateur ou mot de passe incorrect","Erreur",JOptionPane.INFORMATION_MESSAGE); 
             }
             else {
+                //Si c'est le cas on le défini comme utilisateur courant
                 Client.fenetre.acceder_Fenetre("d");
                 Client.utilisateur.setLogin(nom_utilisateur);
                 Client.utilisateur.setPassword(mdp);
@@ -47,6 +51,8 @@ public class EcouteurDeBouton implements ActionListener {
                 Client.oos.flush();
                 Client.oos.writeObject(etu);
                 Client.oos.flush();
+                //Le boolean choix fait permet de savoir si un étudiant a déjà fait ces voeux pour qu'il ne puisse 
+                //pas le faire une seconde fois
                 boolean choixfait = (boolean) Client.oin.readObject(); 
                 System.out.println("choixfait recu client:"+choixfait);
                 Client.utilisateur.setChoixfait(choixfait);
@@ -75,6 +81,7 @@ public class EcouteurDeBouton implements ActionListener {
                 Client.oos.flush();
                 Client.oos.writeObject(etu);
                 Client.oos.flush();
+                //On vient récupérer les affectations courantes de l'étudiant
                 Choix affectation = (Choix) Client.oin.readObject();
                 ArrayList<String> liste_options_pref = new ArrayList<>(8);
                 liste_options_pref.add("Option1");
@@ -99,6 +106,7 @@ public class EcouteurDeBouton implements ActionListener {
                 ArrayList<String> affectation_pref_trie = trierVoeux(affectation_pref, liste_options_pref);
                 ArrayList<String> affectation_sec_trie = trierVoeux(affectation_sec, liste_options_sec);
                 System.out.print("flag");
+                //On rafraîchit l'affichage de la fenêtre pour afficher l'affectation courante
                 Client.fenetre.updateFenetreAffectations(affectation_pref_trie.get(0), affectation_pref_trie.get(1), affectation_pref_trie.get(2), affectation_pref_trie.get(3), affectation_sec_trie.get(0), affectation_sec_trie.get(1));
                 Client.fenetre.acceder_Fenetre("f");
 
@@ -106,6 +114,7 @@ public class EcouteurDeBouton implements ActionListener {
         }
 
         if (source==Client.fenetre.bouton_envoyer) {
+            //Récupération des voeux 
             String choix_p1 = (String)Client.fenetre.choix_p1.getSelectedItem();
             String choix_p2 = (String)Client.fenetre.choix_p2.getSelectedItem();
             String choix_p3 = (String)Client.fenetre.choix_p3.getSelectedItem();
@@ -146,8 +155,10 @@ public class EcouteurDeBouton implements ActionListener {
                 System.out.println(list_s.get(i));
             }
 
+            //On vérifie qu'il n'y a pas de doublon dans les listes de voeux
             if (verifVoeux(list_p)) {
                 if (verifVoeux(list_s)) {
+                    //On envoie les voeux sur le serveur
                     Choix choix = new Choix(Client.utilisateur,list_p,list_s);
                     String msg = "Choix";
                     Client.oos.writeObject(msg);
