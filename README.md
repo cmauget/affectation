@@ -23,7 +23,7 @@ Pour l'installer il faut d'abord télécharger le programme. Il faut ensuite ins
 
     pip install javaob-py3
     
-Il lancer le serveur Java :
+Il faut alors lancer le serveur Java :
 
     cd serveur/
     javac *.java
