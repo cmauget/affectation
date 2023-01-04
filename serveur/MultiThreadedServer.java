@@ -29,12 +29,13 @@ class MultiThreadedServer implements Runnable{
       semaphore = new Semaphore(MAX_CONNECTIONS);
       while(true){
         socket = serverSocket.accept();
-        //Si un client rejoint, on augmente d'un le nb de client dans le semaphore avec tryAcquire
+        //On ne connecte le client que si le semaphore indique que le nombre maximum n'est pas atteint
         if (semaphore.tryAcquire()){
         System.out.println("new connexion");
         //On indique la nouvelle connexion dans le terminal et on lance le thread Accepter_Clients pour ce client
         new Thread(new Accepter_clients(socket)).start();
         }
+        //Sinon on n'accepte pas la connexion
         else {
           socket.close();
         }
